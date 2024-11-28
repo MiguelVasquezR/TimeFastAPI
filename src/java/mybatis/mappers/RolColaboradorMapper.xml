@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rolColaborador" >
+    
+    <insert id="agregar" parameterType="pojo.RolColaborador" >
+        INSERT INTO RolColaborador (id, rol, numLicencia, idColaborador) VALUES (
+        #{idRolColaborador},
+        #{rol},
+        #{numLicencia},
+        #{idColaborador}
+        );
+    </insert>
+    
+    <select id="obtenerUltimoID" resultType="Integer" >
+        SELECT MAX(id) as last_id FROM RolColaborador
+    </select>
+    
+    <update id="actualizar"  parameterType="pojo.RolColaborador"  >
+        UPDATE RolColaborador SET rol = #{rol}, numLicencia= #{numLicencia} WHERE id = #{idRolColaborador}
+    </update>
+   
+    <delete id="eliminar" parameterType="Integer">
+        DELETE FROM RolColaborador WHERE id = #{id}
+    </delete>
+  
+    
+</mapper>

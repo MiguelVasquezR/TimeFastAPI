@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="personas" >
+    
+    <insert id="agregar" parameterType="pojo.Persona" >
+        INSERT INTO Persona (nombre, apellidoPaterno, apellidoMaterno, correo, CURP) VALUES (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno},
+        #{correo}, #{CURP});
+    </insert>
+    
+    <select id="obtenerUltimoID" resultType="Integer" >
+        SELECT MAX(id) as last_id FROM Persona;
+    </select>
+    
+    <update id="actualizar" parameterType="pojo.Persona"  >
+        UPDATE Persona SET nombre = #{nombre},  apellidoPaterno = #{apellidoPaterno}, apellidoMaterno = #{apellidoMaterno},
+        correo = #{correo}, CURP = #{CURP} WHERE id = #{idPersona};
+    </update>
+    
+    <delete id="eliminar" parameterType="Integer">
+        DELETE FROM Persona WHERE id = #{id};
+    </delete>
+    
+    <update id="guardarFoto" parameterType="map">
+        UPDATE Persona SET foto=#{foto} WHERE id=#{id}
+    </update>
+    
+</mapper>

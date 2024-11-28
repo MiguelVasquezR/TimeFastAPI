@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="colaboradores" >
+    
+    <insert id="agregar" parameterType="pojo.Colaborador" >
+        INSERT INTO Colaborador (id, noPersonal, idPersona, contrasena) VALUES
+        (#{idColaborador}, #{noPersonal}, #{idPersona}, #{contrasena});
+    </insert>
+    
+    <select id="obtenerUltimoID" resultType="Integer" >
+        SELECT MAX(id) as last_id FROM Colaborador;
+    </select>
+    
+    <update id="actualizarContrasena"  parameterType="pojo.Colaborador"  >
+        UPDATE Colaborador SET contrasena = #{contrasena} WHERE id = #{idColaborador}
+    </update>
+   
+    <delete id="eliminar" parameterType="Integer">
+        DELETE FROM Colaborador WHERE id = #{id}
+    </delete>
+    
+    <resultMap id="colaboradorResultMap" type="pojo.Colaborador">
+        <id property="idColaborador" column="idColaborador" />
+        <result property="idPersona" column="idPersona" />
+        <result property="noPersonal" column="noPersonal" />
+        <result property="contrasena" column="contrasena" />
+        <result property="idPersona" column="idPersona" />
+        
+        <association property="persona" javaType="pojo.Persona">
+            <id property="idPersona" column="idPersona" />
+            <result property="nombre" column="nombre" />
+            <result property="apellidoPaterno" column="apellidoPaterno" />
+            <result property="apellidoMaterno" column="apellidoMaterno" />
+            <result property="correo" column="correo" />
+            <result property="CURP" column="CURP" />
+            <result property="fotoBase64" column="foto" />
+        </association>
+        
+        <association property="rol" javaType="pojo.RolColaborador">
+            <id property="idRolColaborador" column="idRolColaborador" />
+            <result property="rol" column="rol" />
+            <result property="numLicencia" column="numLicencia" />
+            <result property="idColaborador" column="idColaborador" />
+        </association>
+        
+    </resultMap>
+    
+    <select id="obtenerColaboradores" resultMap="colaboradorResultMap" >
+        SELECT c.id  as idColaborador,
+        c.noPersonal,
+        c.contrasena,
+        p.id  as idPersona,
+        p.nombre,
+        p.apellidoMaterno,
+        p.apellidoPaterno,
+        p.correo,
+        p.foto,
+        p.CURP,
+        rc.id as idRolColaborador,
+        rc.rol,
+        rc.numLicencia
+        FROM Colaborador c
+        INNER JOIN RolColaborador rc ON c.id = rc.idColaborador
+        INNER JOIN Persona p ON c.idPersona = p.id;
+    </select>
+  
+    
+</mapper>

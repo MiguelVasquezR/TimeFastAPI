@@ -31,8 +31,16 @@ public class WSLogin {
     public WSLogin() {
     }
 
+    @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String holaMundo() {
+        return "Hola mundo";
+    }
+
     /**
      * Retrieves representation of an instance of ws.WSLogin
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -44,6 +52,7 @@ public class WSLogin {
 
     /**
      * PUT method for updating or creating an instance of WSLogin
+     *
      * @param content representation for the resource
      */
     @PUT

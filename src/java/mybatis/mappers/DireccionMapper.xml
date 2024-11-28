@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="direccion" >
+    
+    <insert id="agregar" parameterType="pojo.Direccion" >
+        INSERT INTO Direccion(calle, numero, colonia, ciudad, estado, codigoPostal) VALUES (
+        #{calle}, #{numero}, #{colonia}, #{ciudad}, #{estado}, #{codigoPostal})
+    </insert>
+    
+    <select id="obtenerUltimoID" resultType="Integer" >
+        SELECT MAX(id) as last_id FROM Direccion;
+    </select>
+    
+    <update id="actualizar"  parameterType="pojo.Direccion"  >
+        UPDATE Direccion SET calle = #{calle}, numero = #{numero}, colonia = #{colonia}, codigoPostal = #{codigoPostal}, ciudad = #{ciudad}, estado = #{estado}  WHERE id = #{idDireccion};
+    </update>
+   
+   <delete id="eliminar" parameterType="Integer">
+        DELETE FROM Direccion WHERE id = #{id};
+    </delete>
+  
+    
+</mapper>

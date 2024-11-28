@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="clientes" >
+   
+    <insert id="agregar" parameterType="pojo.Cliente"  >
+        INSERT INTO Cliente (idPersona, telefono, idDireccion) VALUES (#{idPersona}, #{telefono}, #{idDireccion});
+    </insert>
+    
+    <select id="obtenerUltimoID" resultType="Integer" >
+        SELECT MAX(id) as last_id FROM Cliente;
+    </select>
+    
+    <resultMap id="clienteResultMap" type="pojo.Cliente">
+        <id property="id" column="id" />
+        <result property="telefono" column="telefono" />
+        <association property="persona" javaType="pojo.Persona">
+            <id property="idPersona" column="idPersona" />
+            <result property="nombre" column="nombre" />
+            <result property="apellidoPaterno" column="apellidoPaterno" />
+            <result property="apellidoMaterno" column="apellidoMaterno" />
+            <result property="correo" column="correo" />
+            <result property="CURP" column="CURP" />
+            <result property="fotoBase64" column="foto" />
+        </association>
+        <association property="direccion" javaType="pojo.Direccion">
+            <id property="idDireccion" column="idDireccion" />
+            <result property="calle" column="calle" />
+            <result property="colonia" column="colonia" />
+            <result property="numero" column="numero" />
+            <result property="codigoPostal" column="codigoPostal" />
+            <result property="ciudad" column="ciudad" />
+            <result property="estado" column="estado" />
+        </association>
+    </resultMap>
+    
+    <select id="obtenerClientes" resultMap="clienteResultMap" >
+        SELECT
+        c.id,
+        c.telefono,
+        p.id as idPersona,
+        p.nombre,
+        p.apellidoPaterno,
+        p.apellidoMaterno,
+        p.correo,
+        p.CURP,
+        p.foto,
+        d.id as idDireccion,
+        d.calle,
+        d.numero,
+        d.colonia,
+        d.codigoPostal,
+        d.ciudad,
+        d.estado
+        FROM  Cliente AS c
+        INNER JOIN Direccion AS d
+        ON c.idDireccion = d.id
+        INNER JOIN Persona AS p
+        ON c.idPersona = p.id;
+    </select>
+    
+    <update id="actualizar" parameterType="pojo.Cliente">
+        UPDATE Cliente SET telefono = #{telefono} WHERE id = #{id};
+    </update>
+    
+    <delete id="eliminar" parameterType="Integer">
+        DELETE FROM Cliente WHERE id = #{id};
+    </delete>
+    
+</mapper>
