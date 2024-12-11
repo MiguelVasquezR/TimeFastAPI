@@ -4,15 +4,15 @@ public class Mensaje {
 
     private String mensaje;
     private Boolean error;
-    private Cliente cliente;
+    private Object objeto;
 
     public Mensaje() {
     }
 
-    public Mensaje(String mensaje, Boolean error, Cliente cliente) {
+    public Mensaje(String mensaje, Boolean error, Object objeto) {
         this.mensaje = mensaje;
         this.error = error;
-        this.cliente = cliente;
+        this.objeto = objeto;
     }
 
     public String getMensaje() {
@@ -31,17 +31,17 @@ public class Mensaje {
         this.error = error;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Object getObjeto() {
+        return objeto;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setObjeto(Object objeto) {
+        this.objeto = objeto;
     }
 
     @Override
     public String toString() {
-        return "Mensaje{" + "mensaje=" + mensaje + ", error=" + error + ", cliente=" + cliente + '}';
+        return "Mensaje{" + "mensaje=" + mensaje + ", error=" + error + ", objeto=" + objeto + '}';
     }
     
     

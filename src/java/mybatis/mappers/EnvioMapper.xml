@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="envios" >
+    
+    <insert id="agregar" parameterType="pojo.Envio" >
+        INSERT INTO Envio (idOrigen, idDestino, costo, fecha, numGuia) 
+        VALUES 
+        (
+        #{idOrigen},
+        #{idDestino},
+        #{costo},
+        #{fecha},
+        #{numGuia}
+        )
+    </insert>
+    
+    <update id="actualizar" parameterType="pojo.Envio">
+        UPDATE Envio SET costo=#{costo}, fecha=#{fecha}  WHERE id = #{idEnvio}
+    </update>
+    
+    <delete id="eliminar" parameterType="Integer" >
+        DELETE FROM Envio WHERE id=#{id}
+    </delete>
+    
+    <select id="obtenerPorID" parameterType="Integer" >
+        SELECT * FROM Envio WHERE id = #{id}
+    </select>
+    
+    <resultMap id="envioNumGuia" type="pojo.Envio">
+         
+        <id property="idEnvio" column="idEnvio" />
+        <result property="numGuia" column="numGuia" />
+        <result property="fecha" column="fecha" />
+        <result property="costo" column="costo" />
+        
+        <association property="origen" javaType="pojo.Direccion">
+            <id property="idDireccion" column="idDireccionOrigen" />
+            <result property="calle" column="calleOrigen" />
+            <result property="colonia" column="coloniaOrigen" />
+            <result property="numero" column="numeroOrigen" />
+            <result property="codigoPostal" column="codigoPostalOrigen" />
+            <result property="ciudad" column="ciudadOrigen" />
+            <result property="estado" column="estadoOrigen" />
+        </association>
+        
+        <association property="destino" javaType="pojo.Direccion">
+            <id property="idDireccion" column="idDireccionDestino" />
+            <result property="calle" column="calleDestino" />
+            <result property="colonia" column="coloniaDestino" />
+            <result property="numero" column="numeroDestino" />
+            <result property="codigoPostal" column="codigoPostalDestino" />
+            <result property="ciudad" column="ciudadDestino" />
+            <result property="estado" column="estadoDestino" />
+        </association>
+        
+        <association property="conductor" javaType="pojo.Colaborador">
+            <id property="idDireccion" column="idDireccionDestino" />
+            <result property="calle" column="calleDestino" />
+            <result property="colonia" column="coloniaDestino" />
+            <result property="numero" column="numeroDestino" />
+            <result property="codigoPostal" column="codigoPostalDestino" />
+            <result property="ciudad" column="ciudadDestino" />
+            <result property="estado" column="estadoDestino" />
+        </association>
+        
+    </resultMap>
+    
+    <select id="consultarPorNumGuia" resultMap="envioNumGuia">
+        SELECT e.id              as idEnvio,
+        e.numGuia,
+        e.fecha,
+        e.costo,
+        d.id              as idDireccionOrigen,
+        d.calle           as calleOrigen,
+        d.numero          as numeroOrigen,
+        d.colonia         as coloniaOrigen,
+        d.codigoPostal    as codigoPostalOrigen,
+        d.ciudad          as ciudadOrigen,
+        d.estado          as estadoOrigen,
+        d2.id             as idDireccionDestino,
+        d2.calle          as calleDestino,
+        d2.numero         as numeroDestino,
+        d2.colonia        as coloniaDestino,
+        d2.codigoPostal   as codigoPostalDestino,
+        d2.ciudad         as ciudadDestino,
+        d2.estado         as estadoDestino,
+        c.id              as idConductor,
+        p.id as idColaborador,
+        p.nombre          as nombreConductor,
+        p.apellidoPaterno as apellidoPaternoConductor,
+        p.apellidoMaterno as apellidoMaternoConductor,
+        p.foto            as fotoConductor
+        FROM Envio e
+        INNER JOIN Direccion d ON e.idOrigen = d.id
+        INNER JOIN Direccion d2 ON e.idDestino = d2.id
+        INNER JOIN Colaborador c ON e.idConductor = c.id
+        INNER JOIN Persona p ON c.idPersona = p.id
+        WHERE e.numGuia = #{numGuia}
+    </select>
+   
+    
+</mapper>

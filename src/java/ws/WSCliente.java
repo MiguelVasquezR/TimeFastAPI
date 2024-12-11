@@ -48,7 +48,7 @@ public class WSCliente {
                         if (ImpCliente.agregarCliente(cliente).equals("Guardado")) {
                             mensaje.setMensaje("Cliente almacenado correctamente");
                             mensaje.setError(Boolean.FALSE);
-                            mensaje.setCliente(cliente);
+                            mensaje.setObjeto(cliente);
                         } else {
                             mensaje.setMensaje("Por el momento, no es posible almacenar el cliente");
                             mensaje.setError(true);
