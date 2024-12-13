@@ -135,12 +135,12 @@ public class WSCliente {
         mensaje.setMensaje("Cliente eliminado");
         return mensaje;
     }
-    
+
     @PUT
     @Path("actualizar-foto/{idPersona}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje subirFoto(@PathParam("idPersona") Integer idPersona,
-            byte[] foto) {        
+            byte[] foto) {
         if (idPersona != null && idPersona > 0 && foto != null) {
             return ImpPersona.registrarFoto(idPersona, foto);
         }
