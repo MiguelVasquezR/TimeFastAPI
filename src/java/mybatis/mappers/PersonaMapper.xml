@@ -27,4 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         UPDATE Persona SET foto=#{foto} WHERE id=#{id}
     </update>
     
+    <select id="validarRepetido" resultType="Integer" >
+        SELECT id 
+        FROM Persona 
+        WHERE CONCAT(nombre, ' ', apellidoPaterno, ' ', apellidoMaterno) LIKE #{nombreCompleto}
+        OR correo = #{correo}
+    </select>
+
+    
 </mapper>

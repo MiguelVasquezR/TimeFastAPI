@@ -36,6 +36,12 @@ public class WSCliente {
         Gson gson = new Gson();
         Cliente cliente = gson.fromJson(jsonCliente, Cliente.class);
         Mensaje mensaje = new Mensaje();
+        
+        if(ImpPersona.validarRepetido(cliente.getPersona()) || ImpCliente.validarRepetido(cliente)){
+            mensaje.setError(true);
+            mensaje.setMensaje("El cliente que deseas agregar a nuestro sistema, ya está registrado.");
+            return mensaje;
+        }
 
         if (ImpDireccion.agregarDireccion(cliente.getDireccion()).equals("Guardado")) {
             int idDireccion = ImpDireccion.obtenerUltimoID();
@@ -79,7 +85,7 @@ public class WSCliente {
     }
 
     @PUT
-    @Path("actualizar-clientes")
+    @Path("actualizar-cliente")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje actualizarCliente(String jsonCliente) {
         Gson gson = new Gson();

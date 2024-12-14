@@ -69,4 +69,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         DELETE FROM Cliente WHERE id = #{id};
     </delete>
     
+    <select id="validarRepetido" parameterType="String" resultType="Integer" >
+        SELECT id FROM Cliente WHERE telefono = #{telefono};
+    </select>
+    
 </mapper>

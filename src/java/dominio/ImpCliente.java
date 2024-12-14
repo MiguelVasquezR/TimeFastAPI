@@ -116,4 +116,23 @@ public class ImpCliente {
         return mensaje;
     }
 
+    public static Boolean validarRepetido(Cliente cliente) {
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        Boolean existeCliente = false;
+        if (conexion != null) {
+            try {
+                int res = conexion.selectOne("clientes.validarRepetido", cliente.getTelefono());
+                conexion.commit();
+                if (res > 0) {
+                    existeCliente = true;
+                }
+            } catch (Exception e) {
+                existeCliente = false;
+            }
+        } else {
+            existeCliente = false;
+        }
+        return existeCliente;
+    }
+
 }

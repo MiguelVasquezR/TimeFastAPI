@@ -1,6 +1,8 @@
 package dominio;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Direccion;
@@ -131,6 +133,36 @@ public class ImpPersona {
             mensaje.setMensaje("No se pudo procesar su petición, intentelo más tarde");
         }
         return mensaje;
+    }
+
+    public static Boolean validarRepetido(Persona persona) {
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        Map<String, String> map = new HashMap<>();
+        String nombreCompleto = persona.getNombre() + " " + persona.getApellidoPaterno() + " " + persona.getApellidoMaterno();
+        map.put("nombreCompleto", nombreCompleto);
+        map.put("correo", persona.getCorreo());
+        Boolean estaRepetido = false;
+        if (conexion != null) {
+            try {
+                int res = conexion.selectOne("personas.validarRepetido", map);
+                conexion.commit();
+                if (res > 0) {
+                    estaRepetido = true;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                estaRepetido = false;
+            } finally {
+                try {
+                    conexion.close();
+                } catch (Exception e) {
+                    estaRepetido = false;
+                }
+            }
+        } else {
+            estaRepetido = false;
+        }
+        return estaRepetido;
     }
 
 }
