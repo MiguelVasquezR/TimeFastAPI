@@ -85,7 +85,7 @@ CREATE TABLE EstadoEnvio
 (
     id          INT PRIMARY KEY AUTO_INCREMENT,
     idEnvio     INT,
-    fecha       DATETIME,
+    fecha       DATE,
     descripcion VARCHAR(50),
     FOREIGN KEY (idEnvio) REFERENCES Envio(id) ON DELETE CASCADE
 );
