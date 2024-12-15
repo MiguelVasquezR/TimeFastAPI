@@ -12,6 +12,115 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="obtenerEstadoEnvio" resultType="pojo.EstadoEnvio" >
         SELECT id as idEstadoEnvio, idEnvio, fecha, descripcion FROM EstadoEnvio WHERE idEnvio = #{idEnvio};
     </select>
+    
+    <insert id="nuevoEstado" parameterType="pojo.EstadoEnvio">
+        INSERT INTO EstadoEnvio (idEnvio, fecha, descripcion, estado) VALUES (
+        #{idEnvio},
+        #{fecha},
+        #{descripcion},
+        #{estado}
+        );
+    </insert>
+    
+    
+    
+    <resultMap id="envioResultMap" type="pojo.Envio">
+        <result column="evId" property="idEnvio"/>
+        <result column="evIdOrigen" property="idOrigen"/>
+        <result column="evIdDestino" property="idDestino"/>
+        <result column="evCosto" property="costo"/>
+        <result column="evFecha" property="fecha"/>
+        <result column="evNumGuia" property="numGuia"/>
+        
+        <association property="cliente" javaType="pojo.Cliente">
+            <id property="id" column="clienteId" />
+            <result property="telefono" column="clienteTelefono" />
+            <association property="persona" javaType="pojo.Persona">
+                <id property="idPersona" column="personaId" />
+                <result property="nombre" column="personaNombre" />
+                <result property="apellidoPaterno" column="personaApellidoPaterno" />
+                <result property="apellidoMaterno" column="personaApellidoMaterno" />
+                <result property="correo" column="personaCorreo" />
+                <result property="CURP" column="personaCURP" />
+                <result property="fotoBase64" column="personaFoto" />
+            </association>
+        </association>
+        
+        <association property="origen" javaType="pojo.Direccion">
+            <id property="idDireccion" column="doId" />
+            <result property="calle" column="doCalle" />
+            <result property="colonia" column="doColonia" />
+            <result property="numero" column="doNumero" />
+            <result property="codigoPostal" column="doCodigoPostal" />
+            <result property="ciudad" column="doCiudad" />
+            <result property="estado" column="doEstado" />
+        </association>
+        
+        <association property="destino" javaType="pojo.Direccion">
+            <id property="idDireccion" column="ddId" />
+            <result property="calle" column="ddCalle" />
+            <result property="colonia" column="ddColonia" />
+            <result property="numero" column="ddNumero" />
+            <result property="codigoPostal" column="ddCodigoPostal" />
+            <result property="ciudad" column="ddCiudad" />
+            <result property="estado" column="ddEstado" />
+        </association>    
+    </resultMap>
+    
+    <select id="detallesEnvioConductor" resultMap="envioResultMap">
+        SELECT ev.id AS evId,
+        ev.idOrigen AS evIdOrigen,
+        ev.idDestino AS evIdDestino,
+        ev.idCliente AS evIdCliente,
+        ev.idConductor AS evIdConductor,
+        ev.costo AS evCosto,
+        ev.fecha AS evFecha,
+        ev.numGuia AS evNumGuia,
+
+        p.id AS personaId,
+        p.nombre AS personaNombre,
+        p.apellidoPaterno AS personaApellidoPaterno,
+        p.apellidoMaterno AS personaApellidoMaterno,
+        p.correo AS personaCorreo,
+        p.foto AS personaFoto,
+        p.CURP AS personaCURP,
+
+        c.id AS clienteId,
+        c.idPersona AS clienteIdPersona,
+        c.telefono AS clienteTelefono,
+        c.idDireccion AS clienteIdDireccion,
+
+        -- Direccion de origen (do)
+        do.id AS doId,
+        do.calle AS doCalle,
+        do.numero AS doNumero,
+        do.colonia AS doColonia,
+        do.ciudad AS doCiudad,
+        do.estado AS doEstado,
+        do.codigoPostal AS doCodigoPostal,
+
+        -- Direccion de destino (dd)
+        dd.id AS ddId,
+        dd.calle AS ddCalle,
+        dd.numero AS ddNumero,
+        dd.colonia AS ddColonia,
+        dd.ciudad AS ddCiudad,
+        dd.estado AS ddEstado,
+        dd.codigoPostal AS ddCodigoPostal
+        FROM Envio ev
+        JOIN Cliente c ON ev.idCliente = c.id
+        JOIN Persona p ON c.idPersona = p.id
+        LEFT JOIN Direccion do ON ev.idOrigen = do.id
+        LEFT JOIN Direccion dd ON ev.idDestino = dd.id
+        WHERE ev.idConductor = #{id};
+    </select>
+    
+    <select id="obtenerEstadosEnvios" resultType="pojo.EstadoEnvio">
+        SELECT id, idEnvio, fecha, descripcion, estado FROM EstadoEnvio WHERE idEnvio = #{id};
+    </select>
+
+
+
    
     
 </mapper>

@@ -1,6 +1,7 @@
 package pojo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Envio {
 
@@ -15,11 +16,12 @@ public class Envio {
     private String fecha;
     private String numGuia;
     private ArrayList<Paquete> paquetes;
+    private List<EstadoEnvio> estadoEnvios;
 
     public Envio() {
     }
 
-    public Envio(Integer idEnvio, Integer idOrigen, Integer idDestino, Direccion origen, Direccion destino, Cliente cliente, Double costo, String fecha, String numGuia, ArrayList<Paquete> paquetes, Colaborador conductor) {
+    public Envio(Integer idEnvio, Integer idOrigen, Integer idDestino, Direccion origen, Direccion destino, Cliente cliente, Double costo, String fecha, String numGuia, ArrayList<Paquete> paquetes, Colaborador conductor, List<EstadoEnvio> estadoEnvios) {
         this.idEnvio = idEnvio;
         this.idOrigen = idOrigen;
         this.idDestino = idDestino;
@@ -31,6 +33,7 @@ public class Envio {
         this.numGuia = numGuia;
         this.paquetes = paquetes;
         this.conductor = conductor;
+        this.estadoEnvios = estadoEnvios;
     }
 
     public Integer getIdEnvio() {
@@ -120,14 +123,19 @@ public class Envio {
     public void setConductor(Colaborador conductor) {
         this.conductor = conductor;
     }
-    
+
+    public List<EstadoEnvio> getEstadoEnvios() {
+        return estadoEnvios;
+    }
+
+    public void setEstadoEnvios(List<EstadoEnvio> estadoEnvios) {
+        this.estadoEnvios = estadoEnvios;
+    }
     
 
     @Override
     public String toString() {
         return "Envio{" + "idEnvio=" + idEnvio + ", idOrigen=" + idOrigen + ", idDestino=" + idDestino + ", origen=" + origen + ", destino=" + destino + ", cliente=" + cliente + ", costo=" + costo + ", fecha=" + fecha + ", numGuia=" + numGuia + ", paquetes=" + paquetes + '}';
     }
-    
-    
 
 }
