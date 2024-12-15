@@ -9,9 +9,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED" >
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/timeFast?serverTimezone=UTC"/>  
-                <property name="username" value="root"/>    
-                <property name="password" value="FormulaUno"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/dbtimefast?serverTimezone=UTC"/>  
+                <property name="username" value="timefast"/>    
+                <property name="password" value="timefast"/>
                 <property name="poolMaximumActiveConnections" value="5000"/>
             </dataSource>
         </environment>
@@ -20,9 +20,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED" >
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/timeFast?serverTimezone=UTC"/>  
-                <property name="username" value="root"/>    
-                <property name="password" value="FormulaUno"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/dbtimefast?serverTimezone=UTC"/>  
+                <property name="username" value="timefast"/>    
+                <property name="password" value="timefast"/>
                 <property name="poolMaximumActiveConnections" value="5000"/>
             </dataSource>
         </environment>
@@ -39,6 +39,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <mapper resource="mybatis/mappers/PaqueteMapper.xml" />
         <mapper resource="mybatis/mappers/EstadoEnvioMapper.xml" />
         <mapper resource="mybatis/mappers/UnidadMapper.xml" />
+        <mapper resource="mybatis/mappers/ConductoresMapper.xml" />
 
     </mappers>
 
