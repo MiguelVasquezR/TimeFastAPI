@@ -7,19 +7,16 @@ public class EstadoEnvio {
     private Envio envio;
     private String fecha;
     private String descripcion;
-    private String estado;
-    
 
     public EstadoEnvio() {
     }
 
-    public EstadoEnvio(Integer idEstadoEnvio, Integer idEnvio, Envio envio, String fecha, String descripcion, String estado) {
+    public EstadoEnvio(Integer idEstadoEnvio, Integer idEnvio, Envio envio, String fecha, String descripcion) {
         this.idEstadoEnvio = idEstadoEnvio;
         this.idEnvio = idEnvio;
         this.envio = envio;
         this.fecha = fecha;
         this.descripcion = descripcion;
-        this.estado = estado;
     }
 
     public Integer getIdEstadoEnvio() {
@@ -62,17 +59,11 @@ public class EstadoEnvio {
         this.descripcion = descripcion;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     @Override
     public String toString() {
         return "EstadoEnvio{" + "idEstadoEnvio=" + idEstadoEnvio + ", idEnvio=" + idEnvio + ", envio=" + envio + ", fecha=" + fecha + ", descripcion=" + descripcion + '}';
     }
+    
+    
 
 }
