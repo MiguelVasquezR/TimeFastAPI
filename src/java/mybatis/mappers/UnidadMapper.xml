@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="unidades" >
+    
+    <insert id="agregar" parameterType="pojo.Unidad">
+        INSERT INTO Unidad (marca, modelo, anio, VIN, numIdentificacion, tipo )
+        VALUES (#{marca}, #{modelo}, #{anio}, #{VIN}, #{numIdentificacion}, #{tipo})
+    </insert>
+    
+    <update id="actualizarFoto" parameterType="map" >
+        UPDATE Unidad SET foto = #{foto} WHERE id = #{id};
+    </update>
+    
+    <select id="obtenerUltimoID" resultType="Integer" >
+        SELECT MAX(id) as last_id FROM Unidad
+    </select>
+    
+    <resultMap id="unidadResultMap" type="pojo.Unidad">
+        <id property="id" column="idUnidad" />
+        <result property="marca" column="marca" />
+        <result property="modelo" column="modelo" />
+        <result property="anio" column="anio" />
+        <result property="VIN" column="VIN" />
+        <result property="numIdentificacion" column="numIdentificacion" />
+        <result property="tipo" column="tipo" />
+        <result property="foto" column="fotoUnidad" />
+        <result property="idConductor" column="idConductor" />
+        
+        <association property="conductos" javaType="pojo.Colaborador">
+            <id property="idColaborador" column="idColaborador" />
+            <result property="idPersona" column="idPersona" />
+            <result property="noPersonal" column="noPersonal" />
+            <result property="contrasena" column="contrasena" />
+            
+            <association property="persona" javaType="pojo.Persona">
+                <id property="idPersona" column="idPersona" />
+                <result property="nombre" column="nombre" />
+                <result property="apellidoPaterno" column="apellidoPaterno" />
+                <result property="apellidoMaterno" column="apellidoMaterno" />
+                <result property="correo" column="correo" />
+                <result property="CURP" column="CURP" />
+                <result property="fotoBase64" column="foto" />
+            </association>
+        </association>
+    </resultMap>
+
+    <select id="obtenerUnidades" resultMap="unidadResultMap">
+        SELECT
+        c.id AS idColaborador,
+        c.noPersonal,
+        p.id AS idPersona,
+        p.nombre,
+        p.apellidoPaterno,
+        p.apellidoMaterno,
+        p.correo,
+        TO_BASE64(p.foto) as foto,
+        p.CURP,
+        u.id AS idUnidad,
+        u.marca,
+        u.modelo,
+        u.anio,
+        u.VIN,
+        u.numIdentificacion,
+        u.tipo,
+        TO_BASE64(u.foto) as fotoUnidad
+        FROM Unidad u
+        LEFT JOIN Colaborador c ON u.idConductor = c.id
+        LEFT JOIN Persona p ON c.idPersona = p.id
+    </select>
+    
+    <delete id="eliminar">
+        DELETE FROM Unidad WHERE id = #{id};
+    </delete>
+    
+    <update id="editar" parameterType="pojo.Unidad">
+        UPDATE Unidad SET marca = #{marca}, modelo=#{modelo}, 
+        anio=#{anio}, numIdentificacion = #{numIdentificacion}, tipo=#{tipo} WHERE id = #{id};
+    </update>
+  
+    
+</mapper>
