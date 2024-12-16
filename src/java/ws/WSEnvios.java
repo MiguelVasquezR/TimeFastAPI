@@ -114,14 +114,12 @@ public class WSEnvios {
     public Mensaje consultarEnvioNumGuia(@PathParam("numGuia") String numGuia) {
         Mensaje mensaje = new Mensaje();
         Envio envio = ImpEnvio.consultarEnvioNumGuia(numGuia);
-
         if (envio != null) {
             mensaje.setError(false);
             mensaje.setMensaje("Envio encontrado");
             mensaje.setObjeto(envio);
             return mensaje;
         }
-
         throw new BadRequestException();
     }
 

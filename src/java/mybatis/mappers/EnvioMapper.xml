@@ -30,7 +30,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <resultMap id="envioNumGuia" type="pojo.Envio">
-         
         <id property="idEnvio" column="idEnvio" />
         <result property="numGuia" column="numGuia" />
         <result property="fecha" column="fecha" />
@@ -55,15 +54,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <result property="ciudad" column="ciudadDestino" />
             <result property="estado" column="estadoDestino" />
         </association>
-        
+      
         <association property="conductor" javaType="pojo.Colaborador">
-            <id property="idDireccion" column="idDireccionDestino" />
-            <result property="calle" column="calleDestino" />
-            <result property="colonia" column="coloniaDestino" />
-            <result property="numero" column="numeroDestino" />
-            <result property="codigoPostal" column="codigoPostalDestino" />
-            <result property="ciudad" column="ciudadDestino" />
-            <result property="estado" column="estadoDestino" />
+            <id property="idColaborador" column="idConductor" />
+            <result property="noPersonal" column="noPersonalConductor" />
+            <association property="persona" javaType="pojo.Persona">
+                <id property="idPersona" column="idColaborador" />
+                <result property="nombre" column="nombreConductor" />
+                <result property="apellidoPaterno" column="apellidoPaternoConductor" />
+                <result property="apellidoMaterno" column="apellidoMaternoConductor" />
+                <result property="fotoBase64" column="fotoConductor" />
+                <result property="CURP" column="curpConductor" />
+                <result property="correo" column="correoConductor" />
+            </association>
         </association>
         
     </resultMap>
@@ -88,11 +91,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         d2.ciudad         as ciudadDestino,
         d2.estado         as estadoDestino,
         c.id              as idConductor,
+        c.noPersonal      as noPersonalConductor,
         p.id as idColaborador,
         p.nombre          as nombreConductor,
         p.apellidoPaterno as apellidoPaternoConductor,
         p.apellidoMaterno as apellidoMaternoConductor,
-        p.foto            as fotoConductor
+        p.foto            as fotoConductor,
+        p.CURP as curpConductor,
+        p.correo as correoConductor
         FROM Envio e
         INNER JOIN Direccion d ON e.idOrigen = d.id
         INNER JOIN Direccion d2 ON e.idDestino = d2.id

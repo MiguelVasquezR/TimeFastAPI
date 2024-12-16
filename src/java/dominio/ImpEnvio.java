@@ -31,8 +31,8 @@ public class ImpEnvio {
             return true;
         }
     }
-    
-      public static Boolean actualizarenvio(Envio envio) {
+
+    public static Boolean actualizarenvio(Envio envio) {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         if (conexion != null) {
             try {
@@ -63,7 +63,8 @@ public class ImpEnvio {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         if (conexion != null) {
             try {
-                return envio = conexion.selectOne("envios.consultarPorNumGuia", numGuia);
+                envio = conexion.selectOne("envios.consultarPorNumGuia", numGuia);
+                System.out.println(envio.toString());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

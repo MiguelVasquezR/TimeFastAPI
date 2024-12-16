@@ -127,7 +127,6 @@ public class ImpUnidad {
     }
 
     public static Mensaje editarUnidad(Unidad unidad) {
-        System.out.println(unidad.toString());
         Mensaje msj = new Mensaje();
         SqlSession conextionBD = MyBatisUtil.obtenerConexion();
         if (conextionBD != null) {
@@ -149,6 +148,61 @@ public class ImpUnidad {
         } else {
             msj.setError(true);
             msj.setMensaje("Por el momento no es posible actualizar la unidad");
+        }
+        return msj;
+    }
+
+    public static Mensaje conductorAsociado(Integer idConductor) {
+        Mensaje msj = new Mensaje();
+        SqlSession conextionBD = MyBatisUtil.obtenerConexion();
+        if (conextionBD != null) {
+            try {
+                int res = conextionBD.selectOne("unidades.conductorAsociado", idConductor);
+                conextionBD.commit();
+                if (res > 0) {
+                    msj.setError(true);
+                    msj.setMensaje("El conductor ya está asociado a una unidad");
+                } else {
+                    msj.setError(false);
+                    msj.setMensaje("El conductor no está asociado");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                msj.setError(false);
+                msj.setMensaje("El conductor no está asociado");
+            }
+        } else {
+            msj.setError(false);
+            msj.setMensaje("El conductor no está asociado");
+        }
+        return msj;
+    }
+
+    public static Mensaje asociarConductor(Integer idConductor, Integer id) {
+        Mensaje msj = new Mensaje();
+        SqlSession conextionBD = MyBatisUtil.obtenerConexion();
+        Map<String, Integer> parametros = new HashMap<>();
+        parametros.put("idConductor", idConductor);
+        parametros.put("id", id);
+        if (conextionBD != null) {
+            try {
+                int res = conextionBD.update("unidades.asociarConductor", parametros);
+                conextionBD.commit();
+                if (res > 0) {
+                    msj.setError(false);
+                    msj.setMensaje("Se ha asociado el conductor a la unidad exitosamente");
+                } else {
+                    msj.setError(true);
+                    msj.setMensaje("Por el momento su petición no se puede cumplir, intentelo más tarde.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                msj.setError(true);
+                msj.setMensaje("Por el momento su petición no se puede cumplir, intentelo más tarde.");
+            }
+        } else {
+            msj.setError(true);
+            msj.setMensaje("Por el momento el servicio no está disponible, intentelo más tarde.");
         }
         return msj;
     }

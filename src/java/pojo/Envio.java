@@ -131,11 +131,13 @@ public class Envio {
     public void setEstadoEnvios(List<EstadoEnvio> estadoEnvios) {
         this.estadoEnvios = estadoEnvios;
     }
-    
 
     @Override
     public String toString() {
-        return "Envio{" + "idEnvio=" + idEnvio + ", idOrigen=" + idOrigen + ", idDestino=" + idDestino + ", origen=" + origen + ", destino=" + destino + ", cliente=" + cliente + ", costo=" + costo + ", fecha=" + fecha + ", numGuia=" + numGuia + ", paquetes=" + paquetes + '}';
+        return "Envio{" + "idEnvio=" + idEnvio + ", idOrigen=" + idOrigen + ", idDestino=" + idDestino + ", origen=" + origen + ", destino=" + destino + ", cliente=" + cliente + ", conductor=" + conductor + ", costo=" + costo + ", fecha=" + fecha + ", numGuia=" + numGuia + ", paquetes=" + paquetes + ", estadoEnvios=" + estadoEnvios + '}';
     }
+    
+
+    
 
 }
