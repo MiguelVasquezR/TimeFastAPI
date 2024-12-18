@@ -91,15 +91,6 @@ public class ImpEstadoEnvio {
         if (conexionBD != null) {
             try {
                 return conexionBD.selectList("estadoEnvio.detallesEnvioConductor", id);
-                /*conexionBD.commit();
-                if (envios.size() == 0) {
-                    msj.setError(true);
-                    msj.setMensaje("No se han encontrado envios para usted");
-                } else {
-                    msj.setError(false);
-                    msj.setMensaje("Se han cargado sus envios");
-                    msj.setObjeto(envios);
-                }*/
             } catch (Exception e) {
                 e.printStackTrace();
                 msj.setError(true);

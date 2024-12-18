@@ -6,14 +6,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="envios" >
     
     <insert id="agregar" parameterType="pojo.Envio" >
-        INSERT INTO Envio (idOrigen, idDestino, costo, fecha, numGuia) 
+        INSERT INTO Envio (idOrigen, idDestino, costo, fecha, numGuia, fechaEntrega) 
         VALUES 
         (
         #{idOrigen},
         #{idDestino},
         #{costo},
         #{fecha},
-        #{numGuia}
+        #{numGuia},
+        #{fechaEntrega}
         )
     </insert>
     
@@ -34,6 +35,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="numGuia" column="numGuia" />
         <result property="fecha" column="fecha" />
         <result property="costo" column="costo" />
+        <result property="fechaEntrega" column="fechaEntrega" />
+        
         
         <association property="origen" javaType="pojo.Direccion">
             <id property="idDireccion" column="idDireccionOrigen" />
@@ -69,42 +72,71 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </association>
         </association>
         
+        <association property="cliente" javaType="pojo.Cliente">
+            <id property="id" column="idCliente" />
+            <result property="telefono" column="telefonoCliente" />
+            
+            <association property="persona" javaType="pojo.Persona">
+                <id property="idPersona" column="idPersonaCliente" />
+                <result property="nombre" column="nombreCliente" />
+                <result property="apellidoPaterno" column="apellidoPaternoCliente" />
+                <result property="apellidoMaterno" column="apellidoMaternoCliente" />
+            </association>
+            
+        </association>
+        
     </resultMap>
     
     <select id="consultarPorNumGuia" resultMap="envioNumGuia">
-        SELECT e.id              as idEnvio,
+        SELECT
+        e.id AS idEnvio,
         e.numGuia,
         e.fecha,
         e.costo,
-        d.id              as idDireccionOrigen,
-        d.calle           as calleOrigen,
-        d.numero          as numeroOrigen,
-        d.colonia         as coloniaOrigen,
-        d.codigoPostal    as codigoPostalOrigen,
-        d.ciudad          as ciudadOrigen,
-        d.estado          as estadoOrigen,
-        d2.id             as idDireccionDestino,
-        d2.calle          as calleDestino,
-        d2.numero         as numeroDestino,
-        d2.colonia        as coloniaDestino,
-        d2.codigoPostal   as codigoPostalDestino,
-        d2.ciudad         as ciudadDestino,
-        d2.estado         as estadoDestino,
-        c.id              as idConductor,
-        c.noPersonal      as noPersonalConductor,
-        p.id as idColaborador,
-        p.nombre          as nombreConductor,
-        p.apellidoPaterno as apellidoPaternoConductor,
-        p.apellidoMaterno as apellidoMaternoConductor,
-        p.foto            as fotoConductor,
-        p.CURP as curpConductor,
-        p.correo as correoConductor
-        FROM Envio e
+        e.fechaEntrega,
+
+        d.id AS idDireccionOrigen,
+        d.calle AS calleOrigen,
+        d.numero AS numeroOrigen,
+        d.colonia AS coloniaOrigen,
+        d.codigoPostal AS codigoPostalOrigen,
+        d.ciudad AS ciudadOrigen,
+        d.estado AS estadoOrigen,
+
+        d2.id AS idDireccionDestino,
+        d2.calle AS calleDestino,
+        d2.numero AS numeroDestino,
+        d2.colonia AS coloniaDestino,
+        d2.codigoPostal AS codigoPostalDestino,
+        d2.ciudad AS ciudadDestino,
+        d2.estado AS estadoDestino,
+
+        c.id AS idConductor,
+        c.noPersonal AS noPersonalConductor,
+        p.id AS idColaborador,
+        p.nombre AS nombreConductor,
+        p.apellidoPaterno AS apellidoPaternoConductor,
+        p.apellidoMaterno AS apellidoMaternoConductor,
+        p.foto AS fotoConductor,
+        p.CURP AS curpConductor,
+        p.correo AS correoConductor,
+
+        cl.id AS idCliente,
+        cl.telefono AS telefonoCliente,
+        pcl.id as idPersonaCliente,
+        pcl.nombre AS nombreCliente,
+        pcl.apellidoPaterno AS apellidoPaternoCliente,
+        pcl.apellidoMaterno AS apellidoMaternoCliente
+        FROM
+        Envio e
         INNER JOIN Direccion d ON e.idOrigen = d.id
         INNER JOIN Direccion d2 ON e.idDestino = d2.id
         INNER JOIN Colaborador c ON e.idConductor = c.id
         INNER JOIN Persona p ON c.idPersona = p.id
-        WHERE e.numGuia = #{numGuia}
+        INNER JOIN Cliente cl ON e.idCliente = cl.id
+        INNER JOIN Persona pcl ON cl.idPersona = pcl.id
+        WHERE
+        e.numGuia = #{numGuia}
     </select>
    
     

@@ -1,5 +1,6 @@
 package dominio;
 
+import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
 import mybatis.MyBatisUtil;
@@ -15,13 +16,14 @@ public class ImpLogin {
         Map<String, Object> map = new HashMap<>();
         map.put("noPersonal", noPersonal);
         map.put("password", password);
+        Gson gson = new Gson();
         if (conexionBD != null) {
             try {
                 Colaborador colaborador = conexionBD.selectOne("login.loginColaborador", map);
                 if (colaborador != null) {
                     msj.setError(false);
                     msj.setMensaje("Colaborador Autenticado. Hola " + colaborador.getPersona().getNombre());
-                    msj.setObjeto(colaborador);
+                    msj.setObjeto(gson.toJson(colaborador));
                 } else {
                     msj.setError(true);
                     msj.setMensaje("Sus credenciales son incorrectas, intente de nuevo.");

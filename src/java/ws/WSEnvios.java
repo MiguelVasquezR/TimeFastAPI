@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import dominio.ImpDireccion;
 import dominio.ImpEnvio;
 import dominio.ImpEstadoEnvio;
+import dominio.ImpPaquete;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,16 +23,17 @@ import javax.ws.rs.core.MediaType;
 import pojo.Envio;
 import pojo.EstadoEnvio;
 import pojo.Mensaje;
+import pojo.Paquete;
 
 @Path("envios")
 public class WSEnvios {
-
+    
     @Context
     private UriInfo context;
-
+    
     public WSEnvios() {
     }
-
+    
     @POST
     @Path("agregar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -70,10 +72,10 @@ public class WSEnvios {
             mensaje.setError(true);
             mensaje.setMensaje("No es posible agregar la dirección de origen");
         }
-
+        
         return mensaje;
     }
-
+    
     @PUT
     @Path("actualizar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -95,19 +97,19 @@ public class WSEnvios {
                     mensaje.setError(true);
                     mensaje.setMensaje("No es posible actualizar la dirección");
                 }
-
+                
             } else {
                 mensaje.setError(true);
                 mensaje.setMensaje("No es posible actualizar la dirección");
             }
-
+            
         } else {
             mensaje.setError(true);
             mensaje.setMensaje("Debe ingresar información valida");
         }
         return mensaje;
     }
-
+    
     @GET
     @Path("consultar/{numGuia}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -115,14 +117,19 @@ public class WSEnvios {
         Mensaje mensaje = new Mensaje();
         Envio envio = ImpEnvio.consultarEnvioNumGuia(numGuia);
         if (envio != null) {
+            Gson gson = new Gson();
+            List<Paquete> listaPaquetes = ImpPaquete.obtenerPaqueteEnvio(envio.getIdEnvio());
+            envio.setPaquetes(listaPaquetes);
+            List<EstadoEnvio> listaEstados = ImpEstadoEnvio.obtenerEstadosEnvio(envio.getIdEnvio());
+            envio.setEstadoEnvios(listaEstados);
             mensaje.setError(false);
             mensaje.setMensaje("Envio encontrado");
-            mensaje.setObjeto(envio);
+            mensaje.setObjeto(gson.toJson(envio));
             return mensaje;
         }
         throw new BadRequestException();
     }
-
+    
     @PUT
     @Path("actualizar-estado-envio")
     @Produces(MediaType.APPLICATION_JSON)
@@ -143,17 +150,17 @@ public class WSEnvios {
         }
         throw new BadRequestException();
     }
-
+    
     @GET
     @Path("consultar-estado/{idEnvio}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje obtenerEstadoEnvio(@PathParam("idEnvio") int idEnvio) {
         Mensaje mensaje = new Mensaje();
-
+        
         if (idEnvio <= 0) {
             throw new BadRequestException();
         }
-
+        
         EstadoEnvio estadoEnvio = ImpEstadoEnvio.obtenerEstadoEnvio(idEnvio);
         if (estadoEnvio != null) {
             mensaje.setError(false);
@@ -163,14 +170,14 @@ public class WSEnvios {
         }
         throw new BadRequestException();
     }
-
+    
     @GET
     @Path("detalles-envio/{idEnvio}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Envio> detallesEnvio(@PathParam("idEnvio") int idEnvio) {
         if (idEnvio > 0) {
             List<Envio> lista = ImpEstadoEnvio.obtenerDetallesEnvio(idEnvio);
-            for(Envio envio : lista){
+            for (Envio envio : lista) {
                 List<EstadoEnvio> estados = ImpEstadoEnvio.obtenerEstadosEnvio(envio.getIdEnvio());
                 envio.setEstadoEnvios(estados);
             }
@@ -178,7 +185,7 @@ public class WSEnvios {
         }
         throw new BadRequestException();
     }
-
+    
     @POST
     @Path("nuevo-estado")
     @Produces(MediaType.APPLICATION_JSON)
@@ -194,14 +201,14 @@ public class WSEnvios {
         }
         throw new BadRequestException();
     }
-
+    
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public String getXml() {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
-
+    
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {

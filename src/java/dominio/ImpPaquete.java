@@ -1,5 +1,6 @@
 package dominio;
 
+import java.util.List;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Direccion;
@@ -92,5 +93,19 @@ public class ImpPaquete {
         }
         return paquete;
     }
+    
+      public static List<Paquete> obtenerPaqueteEnvio(Integer id) {
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        if (conexion != null) {
+            try {
+                return conexion.selectList("paquetes.obtenerPaquetesEnvio", id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    
+    
 
 }
