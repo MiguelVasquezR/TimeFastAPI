@@ -43,7 +43,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         INNER JOIN Persona p ON p.id = c.idPersona
         INNER JOIN RolColaborador rc ON rc.idColaborador = c.id
         WHERE noPersonal = #{noPersonal}
-        AND contrasena = #{password};
+        AND contrasena = #{password}
+        AND rc.rol = 'Conductor';
     </select>
    
     
