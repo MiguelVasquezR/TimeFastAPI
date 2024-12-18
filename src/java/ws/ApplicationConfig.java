@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(ws.CorsFilter.class);
         resources.add(ws.WSCliente.class);
         resources.add(ws.WSColaborador.class);
         resources.add(ws.WSEnvios.class);
