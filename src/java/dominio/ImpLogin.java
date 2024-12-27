@@ -10,7 +10,7 @@ import pojo.Mensaje;
 
 public class ImpLogin {
     
-    public static Mensaje validarCredencialesLogin(Integer noPersonal, String password) {
+    public static Mensaje validarCredencialesLogin(Integer noPersonal, String password, Boolean esConductor) {
         Mensaje msj = new Mensaje();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
         Map<String, Object> map = new HashMap<>();
@@ -19,7 +19,12 @@ public class ImpLogin {
         Gson gson = new Gson();
         if (conexionBD != null) {
             try {
-                Colaborador colaborador = conexionBD.selectOne("login.loginColaborador", map);
+                Colaborador colaborador = null;
+                if(esConductor){
+                    colaborador = conexionBD.selectOne("login.loginColaboradorConductor", map);
+                }else{
+                    colaborador = conexionBD.selectOne("login.loginColaborador", map);
+                }
                 if (colaborador != null) {
                     msj.setError(false);
                     msj.setMensaje("Colaborador Autenticado. Hola " + colaborador.getPersona().getNombre());

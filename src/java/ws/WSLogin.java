@@ -44,12 +44,23 @@ public class WSLogin {
     }
 
     @POST
+    @Path("login-colaborador-conductor")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje validarCredencialesColaboradorConductor(@FormParam("noPersonal") Integer noPersonal,
+            @FormParam("password") String password) {
+        if ((noPersonal != null && password != null) && noPersonal > 0 && !password.isEmpty()) {
+            return ImpLogin.validarCredencialesLogin(noPersonal, password, true);
+        }
+        throw new BadRequestException();
+    }
+    
+    @POST
     @Path("login-colaborador")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje validarCredencialesColaborador(@FormParam("noPersonal") Integer noPersonal,
             @FormParam("password") String password) {
         if ((noPersonal != null && password != null) && noPersonal > 0 && !password.isEmpty()) {
-            return ImpLogin.validarCredencialesLogin(noPersonal, password);
+            return ImpLogin.validarCredencialesLogin(noPersonal, password, false);
         }
         throw new BadRequestException();
     }

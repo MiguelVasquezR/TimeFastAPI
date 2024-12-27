@@ -26,6 +26,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         
     </resultMap>
     
+    <select id="loginColaboradorConductor" resultMap="loginColaboradorMap" >
+        SELECT c.id              as idColaborador,
+        c.noPersonal      as noPersonal,
+        p.id              as idPersona,
+        p.nombre          as nombre,
+        p.apellidoPaterno as apellidoPaterno,
+        p.apellidoMaterno as apellidoMaterno,
+        p.correo          as correo,
+        p.foto            as foto,
+        rc.id             as idRolColaborador,
+        rc.numLicencia    as numLicencia,
+        rc.rol            as rol
+        FROM Colaborador c
+        INNER JOIN Persona p ON p.id = c.idPersona
+        INNER JOIN RolColaborador rc ON rc.idColaborador = c.id
+        WHERE noPersonal = #{noPersonal}
+        AND contrasena = #{password}
+        AND rc.rol = 'Conductor';
+    </select>
+    
     
     <select id="loginColaborador" resultMap="loginColaboradorMap" >
         SELECT c.id              as idColaborador,
@@ -44,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         INNER JOIN RolColaborador rc ON rc.idColaborador = c.id
         WHERE noPersonal = #{noPersonal}
         AND contrasena = #{password}
-        AND rc.rol = 'Conductor';
+        AND rc.rol != 'Conductor';
     </select>
    
     
