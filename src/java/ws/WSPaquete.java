@@ -111,25 +111,6 @@ public class WSPaquete {
         }
         throw new BadRequestException();
     }
-
-    @GET
-    @Path("obtener-paquetes")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Paquete> obtenerPaquetes() {
-        return ImpPaquete.obtenerPaquetes();
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public String getXml() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
-    }
-
-    @PUT
-    @Consumes(MediaType.APPLICATION_XML)
-    public void putXml(String content) {
-    }
     
     @GET
     @Path("obtener-paquetes-por-envio/{idEnvio}")
@@ -151,5 +132,27 @@ public class WSPaquete {
         }
         throw new BadRequestException("El ID del envío debe ser mayor a 0");
     }
+
+
+    @GET
+    @Path("obtener-paquetes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Paquete> obtenerPaquetes() {
+        return ImpPaquete.obtenerPaquetes();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_XML)
+    public String getXml() {
+        //TODO return proper representation object
+        throw new UnsupportedOperationException();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_XML)
+    public void putXml(String content) {
+    }
+    
+
     
 }

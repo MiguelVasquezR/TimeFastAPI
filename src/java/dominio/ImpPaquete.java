@@ -105,18 +105,6 @@ public class ImpPaquete {
         }
         return null;
     }
-
-    public static List<Paquete> obtenerPaquetes() {
-        SqlSession conexion = MyBatisUtil.obtenerConexion();
-        if (conexion != null) {
-            try {
-                return conexion.selectList("paquetes.obtenerPaquetes");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
     
     public static List<Paquete> obtenerPaquetesPorEnvio(Integer idEnvio) {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
@@ -132,5 +120,19 @@ public class ImpPaquete {
         }
         return null; // Devuelve null si no hay conexión o ocurre un error
     }
+
+
+    public static List<Paquete> obtenerPaquetes() {
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        if (conexion != null) {
+            try {
+                return conexion.selectList("paquetes.obtenerPaquetes");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    
 
 }
