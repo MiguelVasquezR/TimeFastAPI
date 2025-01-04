@@ -15,7 +15,7 @@ public class ImpColaborador {
             try {
                 int res = conexion.insert("colaboradores.agregar", colaborador);
                 conexion.commit();
-                if (res < 1) {
+                if (res > 1) {
                     respuesta = false;
                 }
             } catch (Exception ex) {
@@ -30,7 +30,6 @@ public class ImpColaborador {
         } else {
             respuesta = true;
         }
-
         return respuesta;
     }
 
@@ -103,6 +102,19 @@ public class ImpColaborador {
                 return null;
             }
         } else {
+            return null;
+        }
+    }
+    
+    public static Integer obtenerIdPersona(Integer idColaborador){
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        if(conexion != null){
+            try{
+                return conexion.selectOne("obtenerIdPersona", idColaborador);
+            }catch(Exception e){
+                return null;
+            }
+        }else{
             return null;
         }
     }

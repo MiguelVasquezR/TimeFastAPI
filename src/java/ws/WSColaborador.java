@@ -50,6 +50,7 @@ public class WSColaborador {
         if (idPersona > 0) {
             colaborador.setIdPersona(idPersona);
             boolean respuestaColaborador = ImpColaborador.agregarColaborador(colaborador);
+            System.out.println(respuestaColaborador);
             if (respuestaColaborador) {
                 mensaje.setError(true);
                 mensaje.setMensaje("No es posible agregar al colaborador");
@@ -117,10 +118,10 @@ public class WSColaborador {
     @DELETE
     @Path("eliminar")
     @Produces(MediaType.APPLICATION_JSON)
-    public Mensaje eliminarColaborador(String idsColaborador) {
+    public Mensaje eliminarColaborador(String idColaborador) {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
-        Colaborador colaborador = gson.fromJson(idsColaborador, Colaborador.class);
+        Colaborador colaborador = gson.fromJson(idColaborador, Colaborador.class);
         if (colaborador.getIdColaborador() > 0 && colaborador.getIdPersona() > 0 && colaborador.getRol().getIdRolColaborador() > 0) {
             Boolean respuestaRolColab = ImpRolColaborador.eliminarRolColaborador(colaborador.getRol().getIdRolColaborador());
             if (!respuestaRolColab) {
@@ -147,9 +148,18 @@ public class WSColaborador {
     public Mensaje subirFoto(@PathParam("idColaborador") Integer idColaborador,
             byte[] foto) {        
         if (idColaborador != null && idColaborador > 0 && foto != null) {
-            return ImpPersona.registrarFoto(idColaborador, foto);
+            Integer idPersona = ImpColaborador.obtenerIdPersona(idColaborador);
+            return ImpPersona.registrarFoto(idPersona, foto);
         }
         throw new BadRequestException();
+    }
+    
+    @GET
+    @Path("obtener-ultimo-id")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String obtenerUltimoID() {
+        Gson gson = new Gson();
+        return gson.toJson(ImpColaborador.obtenerUltimoID());
     }
 
     @GET

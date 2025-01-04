@@ -22,6 +22,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         DELETE FROM Colaborador WHERE id = #{id}
     </delete>
     
+    <select id="obtenerIdPersona" resultType="Integer">
+        SELECT idPersona FROM Colaborador WHERE id = #{idColaborador}
+    </select>
+    
     <resultMap id="colaboradorResultMap" type="pojo.Colaborador">
         <id property="idColaborador" column="idColaborador" />
         <result property="idPersona" column="idPersona" />
@@ -57,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         p.apellidoMaterno,
         p.apellidoPaterno,
         p.correo,
-        p.foto,
+        TO_BASE64(p.foto) as foto,
         p.CURP,
         rc.id as idRolColaborador,
         rc.rol,
