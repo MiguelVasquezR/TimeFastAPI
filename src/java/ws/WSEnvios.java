@@ -205,12 +205,45 @@ public class WSEnvios {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public String getXml() {
-        //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
     
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
+    }
+
+    @GET
+    @Path("todos-num-guia")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje obtenerTodosLosNumGuia() {
+        Mensaje mensaje = new Mensaje();
+        List<String> numerosGuia = ImpEnvio.obtenerTodosLosNumGuia();
+        if (numerosGuia != null && !numerosGuia.isEmpty()) {
+            mensaje.setError(false);
+            mensaje.setMensaje("Números de guía obtenidos exitosamente");
+            mensaje.setObjeto(numerosGuia);
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("No se encontraron números de guía");
+        }
+        return mensaje;
+    }
+    
+    @GET
+    @Path("todos-id-envio")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje obtenerTodosLosIdEnvio() {
+        Mensaje mensaje = new Mensaje();
+        List<Integer> idsEnvio = ImpEnvio.obtenerTodosLosIdEnvio();
+        if (idsEnvio != null && !idsEnvio.isEmpty()) {
+            mensaje.setError(false);
+            mensaje.setMensaje("IDs de envío obtenidos exitosamente");
+            mensaje.setObjeto(idsEnvio);
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("No se encontraron IDs de envío");
+        }
+        return mensaje;
     }
 }
