@@ -2,6 +2,8 @@ package dominio;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Envio;
@@ -88,5 +90,44 @@ public class ImpEnvio {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return nuevaFecha.format(formatter);
     }
+    
+    
+    public static List<String> obtenerTodosLosNumGuia() {
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        List<String> numerosGuia = new ArrayList<>();
+        if (conexion != null) {
+            try {
+                numerosGuia = conexion.selectList("envios.obtenerTodosNumGuia");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                try {
+                    conexion.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return numerosGuia;
+    }
+    
+    public static List<Integer> obtenerTodosLosIdEnvio() {
+    SqlSession conexion = MyBatisUtil.obtenerConexion();
+    List<Integer> idsEnvio = new ArrayList<>();
+    if (conexion != null) {
+        try {
+            idsEnvio = conexion.selectList("envios.obtenerTodosIdEnvio");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conexion.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return idsEnvio;
+}
     
 }

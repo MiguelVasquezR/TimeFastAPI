@@ -5,6 +5,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="envios" >
     
+    <select id="obtenerTodosIdEnvio" resultType="int">
+        SELECT id FROM Envio;
+    </select>
+    
     <insert id="agregar" parameterType="pojo.Envio" >
         INSERT INTO Envio (idOrigen, idDestino, costo, fecha, numGuia, fechaEntrega) 
         VALUES 
@@ -28,6 +32,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="obtenerPorID" parameterType="Integer" >
         SELECT * FROM Envio WHERE id = #{id}
+    </select>
+    
+    <select id="obtenerTodosNumGuia" resultType="String">
+        SELECT numGuia FROM Envio
     </select>
     
     <resultMap id="envioNumGuia" type="pojo.Envio">
@@ -138,6 +146,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE
         e.numGuia = #{numGuia}
     </select>
-   
-    
+
 </mapper>

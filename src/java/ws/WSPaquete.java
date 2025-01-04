@@ -152,4 +152,7 @@ public class WSPaquete {
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
     }
+    
+
+    
 }
