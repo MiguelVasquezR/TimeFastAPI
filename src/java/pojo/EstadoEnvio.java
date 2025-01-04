@@ -72,7 +72,7 @@ public class EstadoEnvio {
 
     @Override
     public String toString() {
-        return "EstadoEnvio{" + "idEstadoEnvio=" + idEstadoEnvio + ", idEnvio=" + idEnvio + ", envio=" + envio + ", fecha=" + fecha + ", descripcion=" + descripcion + '}';
+        return "EstadoEnvio{" + "idEstadoEnvio=" + idEstadoEnvio + ", idEnvio=" + idEnvio + ", envio=" + envio + ", fecha=" + fecha + ", descripcion=" + descripcion + ", estado=" + estado + '}';
     }
 
 }

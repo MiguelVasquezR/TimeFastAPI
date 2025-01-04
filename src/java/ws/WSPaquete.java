@@ -111,6 +111,28 @@ public class WSPaquete {
         }
         throw new BadRequestException();
     }
+    
+    @GET
+    @Path("obtener-paquetes-por-envio/{idEnvio}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje obtenerPaquetesPorEnvio(@PathParam("idEnvio") Integer idEnvio) {
+        Mensaje mensaje = new Mensaje();
+        Gson gson = new Gson();
+        if (idEnvio != null && idEnvio > 0) {
+            List<Paquete> paquetes = ImpPaquete.obtenerPaquetesPorEnvio(idEnvio);
+            if (paquetes != null && !paquetes.isEmpty()) {
+                mensaje.setObjeto(gson.toJson(paquetes));
+                mensaje.setError(false);
+                mensaje.setMensaje("Paquetes obtenidos correctamente");
+            } else {
+                mensaje.setError(true);
+                mensaje.setMensaje("No se encontraron paquetes para el envío con ID: " + idEnvio);
+            }
+            return mensaje;
+        }
+        throw new BadRequestException("El ID del envío debe ser mayor a 0");
+    }
+
 
     @GET
     @Path("obtener-paquetes")

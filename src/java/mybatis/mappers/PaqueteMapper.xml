@@ -55,6 +55,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         INNER JOIN
         Envio e ON p.idEnvio = e.id;
     </select>
+    
+    <select id="obtenerPaquetesPorEnvio" parameterType="int" resultType="pojo.Paquete">
+        SELECT 
+            p.id,
+            p.idEnvio,
+            p.descripcion,
+            p.dimensiones,
+            p.peso
+        FROM 
+            Paquete p
+        WHERE 
+            p.idEnvio = #{idEnvio};
+    </select>
    
     
 </mapper>

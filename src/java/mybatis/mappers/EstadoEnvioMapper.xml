@@ -10,7 +10,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     
     <select id="obtenerEstadoEnvio" resultType="pojo.EstadoEnvio" >
-        SELECT id as idEstadoEnvio, idEnvio, fecha, descripcion FROM EstadoEnvio WHERE idEnvio = #{idEnvio};
+        SELECT 
+        id AS idEstadoEnvio, 
+        idEnvio, 
+        fecha, 
+        descripcion, 
+        estado
+        FROM EstadoEnvio
+        WHERE idEnvio = #{idEnvio}
+        ORDER BY fecha DESC
+        LIMIT 1;
     </select>
     
     <insert id="nuevoEstado" parameterType="pojo.EstadoEnvio">
@@ -23,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
     
     
-    
+        
     <resultMap id="envioResultMap" type="pojo.Envio">
         <result column="evId" property="idEnvio"/>
         <result column="evIdOrigen" property="idOrigen"/>
