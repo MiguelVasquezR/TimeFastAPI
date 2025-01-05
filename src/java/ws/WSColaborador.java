@@ -162,5 +162,13 @@ public class WSColaborador {
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
     }
+    
+    @GET
+    @Path("obtener-conductores")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Colaborador> obtenerConductores() {
+        return ImpColaborador.obtenerConductores();
+    }
+
 
 }

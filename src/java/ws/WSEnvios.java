@@ -231,6 +231,25 @@ public class WSEnvios {
     }
     
     @GET
+    @Path("todos-envios")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje obtenerTodosLosEnvios() {
+        Mensaje mensaje = new Mensaje();
+        List<Envio> envios = ImpEnvio.obtenerTodosLosEnvios();
+        if (envios != null && !envios.isEmpty()) {
+            mensaje.setError(false);
+            mensaje.setMensaje("Envíos obtenidos exitosamente");
+            Gson gson = new Gson();
+            mensaje.setObjeto(gson.toJson(envios));
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("No se encontraron envíos");
+        }
+        return mensaje;
+    }
+
+    
+    @GET
     @Path("todos-id-envio")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje obtenerTodosLosIdEnvio() {
@@ -246,4 +265,74 @@ public class WSEnvios {
         }
         return mensaje;
     }
+    
+    @PUT
+    @Path("asignar-conductor/{idEnvio}/{idConductor}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje asignarConductor(@PathParam("idEnvio") int idEnvio, @PathParam("idConductor") int idConductor) {
+        Mensaje mensaje = new Mensaje();
+
+        if (idEnvio <= 0 || idConductor <= 0) {
+            mensaje.setError(true);
+            mensaje.setMensaje("Parámetros inválidos. Verifique los IDs proporcionados.");
+            return mensaje;
+        }
+
+        boolean resultado = ImpEnvio.asignarConductor(idEnvio, idConductor);
+        if (resultado) {
+            mensaje.setError(false);
+            mensaje.setMensaje("Conductor asignado correctamente al envío.");
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("No fue posible asignar el conductor al envío. Verifique los datos.");
+        }
+
+        return mensaje;
+    }
+
+@POST
+@Path("agregar-con-cliente/{idCliente}")
+@Produces(MediaType.APPLICATION_JSON)
+public Mensaje agregarEnvioConCliente(@PathParam("idCliente") int idCliente, String jsonEnvio) {
+    Mensaje mensaje = new Mensaje();
+    Gson gson = new Gson();
+    Envio envio = gson.fromJson(jsonEnvio, Envio.class);
+
+    if (ImpDireccion.agregarDireccion(envio.getOrigen()).equals("Guardado")) {
+        int idOrigen = ImpDireccion.obtenerUltimoID();
+        if (idOrigen > 0) {
+            envio.setIdOrigen(idOrigen);
+            if (ImpDireccion.agregarDireccion(envio.getDestino()).equals("Guardado")) {
+                int idDestino = ImpDireccion.obtenerUltimoID();
+                envio.setIdDestino(idDestino);
+                if (idDestino > 0) {
+                    if (!ImpEnvio.agregarEnvioConCliente(envio, idCliente)) {
+                        mensaje.setError(false);
+                        mensaje.setMensaje("Se ha agregado el envío correctamente.");
+                    } else {
+                        mensaje.setError(true);
+                        mensaje.setMensaje("No es posible agregar el envío.");
+                    }
+                } else {
+                    mensaje.setError(true);
+                    mensaje.setMensaje("No se obtuvo el ID de destino.");
+                }
+            } else {
+                mensaje.setError(true);
+                mensaje.setMensaje("No es posible agregar la dirección de destino.");
+            }
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("No se obtuvo el ID de origen.");
+        }
+    } else {
+        mensaje.setError(true);
+        mensaje.setMensaje("No es posible agregar la dirección de origen.");
+    }
+
+    return mensaje;
+}
+
+    
+    
 }

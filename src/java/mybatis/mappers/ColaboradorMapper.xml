@@ -66,6 +66,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         INNER JOIN RolColaborador rc ON c.id = rc.idColaborador
         INNER JOIN Persona p ON c.idPersona = p.id;
     </select>
+    
+    <select id="obtenerConductores" resultMap="colaboradorResultMap">
+    SELECT c.id  as idColaborador,
+           c.noPersonal,
+           c.contrasena,
+           p.id  as idPersona,
+           p.nombre,
+           p.apellidoMaterno,
+           p.apellidoPaterno,
+           p.correo,
+           p.foto,
+           p.CURP,
+           rc.id as idRolColaborador,
+           rc.rol,
+           rc.numLicencia
+    FROM Colaborador c
+    INNER JOIN RolColaborador rc ON c.id = rc.idColaborador
+    INNER JOIN Persona p ON c.idPersona = p.id
+    WHERE rc.rol = 'Conductor';
+</select>
+
   
     
 </mapper>

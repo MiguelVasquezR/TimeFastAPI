@@ -106,5 +106,25 @@ public class ImpColaborador {
             return null;
         }
     }
+    
+    public static List<Colaborador> obtenerConductores() {
+    List<Colaborador> conductores = new ArrayList<>();
+    SqlSession conexion = MyBatisUtil.obtenerConexion();
+    if (conexion != null) {
+        try {
+            conductores = conexion.selectList("colaboradores.obtenerConductores");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conexion.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return conductores;
+}
+
 
 }
