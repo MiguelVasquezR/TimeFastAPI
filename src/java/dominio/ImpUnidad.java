@@ -93,7 +93,6 @@ public class ImpUnidad {
             try {
                 unidades = conexionBD.selectList("unidades.obtenerUnidades");
                 conexionBD.commit();
-                System.out.println(unidades.get(0).getFoto());
             } catch (Exception e) {
                 e.printStackTrace();
                 unidades = null;

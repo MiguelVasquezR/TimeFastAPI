@@ -119,10 +119,10 @@ public class ImpPersona {
                 conexion.commit();
                 if (filasAfectadas > 0) {
                     mensaje.setError(false);
-                    mensaje.setMensaje("Foto del cliente actualizada con exito");
+                    mensaje.setMensaje("Foto actualizada con exito");
                 } else {
                     mensaje.setError(true);
-                    mensaje.setMensaje("Foto del cliente no se pudo actualizar");
+                    mensaje.setMensaje("Foto no se pudo actualizar");
                 }
             } catch (Exception e) {
                 mensaje.setError(true);
