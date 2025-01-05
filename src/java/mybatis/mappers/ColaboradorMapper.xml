@@ -14,13 +14,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT MAX(id) as last_id FROM Colaborador;
     </select>
     
-    <update id="actualizarContrasena"  parameterType="pojo.Colaborador"  >
+    <update id="actualizarContrasena"    >
         UPDATE Colaborador SET contrasena = #{contrasena} WHERE id = #{idColaborador}
     </update>
    
     <delete id="eliminar" parameterType="Integer">
         DELETE FROM Colaborador WHERE id = #{id}
     </delete>
+    
+    <select id="obtenerIdPersona" resultType="Integer">
+        SELECT idPersona FROM Colaborador WHERE id = #{idColaborador}
+    </select>
     
     <resultMap id="colaboradorResultMap" type="pojo.Colaborador">
         <id property="idColaborador" column="idColaborador" />
@@ -57,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         p.apellidoMaterno,
         p.apellidoPaterno,
         p.correo,
-        p.foto,
+        TO_BASE64(p.foto) as foto,
         p.CURP,
         rc.id as idRolColaborador,
         rc.rol,
@@ -87,6 +91,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     WHERE rc.rol = 'Conductor';
 </select>
 
+    <select id="recuperarContrasena" resultMap="colaboradorResultMap">
+        SELECT CONCAT(p.nombre, ' ', p.apellidoPaterno, ' ', p.apellidoMaterno) as nombre, c.id as idColaborador FROM Colaborador c INNER JOIN Persona p ON c.idPersona = p.id WHERE p.correo = #{correo};
+    </select>
   
     
 </mapper>

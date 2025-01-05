@@ -34,6 +34,7 @@ public class ImpLogin {
                     msj.setMensaje("Sus credenciales son incorrectas, intente de nuevo.");
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 msj.setError(true);
                 msj.setMensaje("Por el momento no podemos validar tus credenciales, intentelo más tarde");
             }
