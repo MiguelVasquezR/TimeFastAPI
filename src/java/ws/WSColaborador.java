@@ -10,6 +10,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -146,20 +147,43 @@ public class WSColaborador {
     @Path("actualizar-foto/{idColaborador}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje subirFoto(@PathParam("idColaborador") Integer idColaborador,
-            byte[] foto) {        
+            byte[] foto) {
         if (idColaborador != null && idColaborador > 0 && foto != null) {
             Integer idPersona = ImpColaborador.obtenerIdPersona(idColaborador);
             return ImpPersona.registrarFoto(idPersona, foto);
         }
         throw new BadRequestException();
     }
-    
+
     @GET
     @Path("obtener-ultimo-id")
     @Produces(MediaType.APPLICATION_JSON)
     public String obtenerUltimoID() {
         Gson gson = new Gson();
         return gson.toJson(ImpColaborador.obtenerUltimoID());
+    }
+
+    @POST
+    @Path("recuperar-contrasena/{correo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje recupearContrasena(@PathParam("correo") String correo) {
+        if (correo != null || !correo.isEmpty()) {
+            Colaborador c = ImpColaborador.obtenerDatosColaborador(correo);
+            if (c != null) {
+                return ImpColaborador.recuperarContrasena(c.getPersona().getNombre(), c.getIdColaborador(), correo);
+            }
+        }
+        throw new BadRequestException();
+    }
+
+    @POST
+    @Path("actualizas-password")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje actualizarContrasena(@FormParam("password") String password, @FormParam("token") String token) {
+        if (password != null || !password.isEmpty()) {
+            return ImpColaborador.actualizarContrasena(password, token);
+        }
+        throw new BadRequestException();
     }
 
     @GET

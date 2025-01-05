@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap id="loginColaboradorMap" type="pojo.Colaborador">
         <result column="idColaborador" property="idColaborador"/>
         <result column="noPersonal" property="noPersonal"/>
+        <result column="contrasena" property="contrasena"/>
         
         <association property="rol" javaType="pojo.RolColaborador">
             <id property="idRolColaborador" column="idRolColaborador" />
@@ -29,12 +30,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="loginColaboradorConductor" resultMap="loginColaboradorMap" >
         SELECT c.id              as idColaborador,
         c.noPersonal      as noPersonal,
+        c.contrasena as contrasena,
         p.id              as idPersona,
         p.nombre          as nombre,
         p.apellidoPaterno as apellidoPaterno,
         p.apellidoMaterno as apellidoMaterno,
         p.correo          as correo,
-        p.foto            as foto,
+        TO_BASE64(p.foto) as foto,
         rc.id             as idRolColaborador,
         rc.numLicencia    as numLicencia,
         rc.rol            as rol
@@ -55,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         p.apellidoPaterno as apellidoPaterno,
         p.apellidoMaterno as apellidoMaterno,
         p.correo          as correo,
-        p.foto            as foto,
+        TO_BASE64(p.foto) as foto,
         rc.id             as idRolColaborador,
         rc.numLicencia    as numLicencia,
         rc.rol            as rol
