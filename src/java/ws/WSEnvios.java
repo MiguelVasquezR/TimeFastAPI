@@ -110,7 +110,10 @@ public class WSEnvios {
                 mensaje.setMensaje("No es posible actualizar la dirección");
             }
             
-         
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("Debe ingresar información valida");
+        }
         return mensaje;
     }
     
@@ -167,7 +170,6 @@ public class WSEnvios {
             throw new BadRequestException();
         }
         Gson gson = new Gson();
-
         EstadoEnvio estadoEnvio = ImpEstadoEnvio.obtenerEstadoEnvio(idEnvio);
         if (estadoEnvio != null) {
             mensaje.setError(false);
