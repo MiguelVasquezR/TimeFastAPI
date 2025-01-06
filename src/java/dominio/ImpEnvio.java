@@ -40,7 +40,7 @@ public class ImpEnvio {
         }
     }
     
-    public static Boolean actualizarenvio(Envio envio) {
+    public static Boolean actualizarEnvio(Envio envio) {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         if (conexion != null) {
             try {

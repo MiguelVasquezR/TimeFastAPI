@@ -21,6 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY fecha DESC
         LIMIT 1;
     </select>
+
     
     <insert id="nuevoEstado" parameterType="pojo.EstadoEnvio">
         INSERT INTO EstadoEnvio (idEnvio, fecha, descripcion, estado) VALUES (

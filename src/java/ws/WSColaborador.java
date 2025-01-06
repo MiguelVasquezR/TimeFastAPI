@@ -38,20 +38,16 @@ public class WSColaborador {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
         Colaborador colaborador = gson.fromJson(jsonColaborador, Colaborador.class);
-
         boolean respuestaPersona = ImpPersona.agregarPersona(colaborador.getPersona()).equals("Guardado");
-
         if (!respuestaPersona) {
             mensaje.setError(true);
             mensaje.setMensaje("No es posible agregar a la persona");
             return mensaje;
         }
-
         int idPersona = ImpPersona.obtenerUltimoID();
         if (idPersona > 0) {
             colaborador.setIdPersona(idPersona);
             boolean respuestaColaborador = ImpColaborador.agregarColaborador(colaborador);
-            System.out.println(respuestaColaborador);
             if (respuestaColaborador) {
                 mensaje.setError(true);
                 mensaje.setMensaje("No es posible agregar al colaborador");
@@ -90,7 +86,7 @@ public class WSColaborador {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
         Colaborador colaborador = gson.fromJson(jsonColaborador, Colaborador.class);
-        if (colaborador.getIdColaborador() > 0 && colaborador.getPersona().getIdPersona() > 0 && colaborador.getRol().getIdRolColaborador() > 0) {
+        if (colaborador.getIdColaborador() > 0 && colaborador.getPersona().getIdPersona() > 0 && colaborador.getRol().getId() > 0) {
             Boolean respuestaPersona = ImpPersona.actualizarPersona(colaborador.getPersona()).getError();
             if (!respuestaPersona) {
                 Boolean respuestaColaborador = ImpColaborador.actualizarColaborador(colaborador);
@@ -123,8 +119,8 @@ public class WSColaborador {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
         Colaborador colaborador = gson.fromJson(idColaborador, Colaborador.class);
-        if (colaborador.getIdColaborador() > 0 && colaborador.getIdPersona() > 0 && colaborador.getRol().getIdRolColaborador() > 0) {
-            Boolean respuestaRolColab = ImpRolColaborador.eliminarRolColaborador(colaborador.getRol().getIdRolColaborador());
+        if (colaborador.getIdColaborador() > 0 && colaborador.getIdPersona() > 0 && colaborador.getRol().getId() > 0) {
+            Boolean respuestaRolColab = ImpRolColaborador.eliminarRolColaborador(colaborador.getRol().getId());
             if (!respuestaRolColab) {
                 Boolean respuestaColab = ImpColaborador.eliminarColaborador(colaborador.getIdColaborador());
                 if (!respuestaColab) {

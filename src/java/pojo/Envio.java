@@ -8,6 +8,7 @@ public class Envio {
     private Integer idEnvio;
     private Integer idOrigen;
     private Integer idDestino;
+    private Integer idCliente;
     private Direccion origen;
     private Direccion destino;
     private Cliente cliente;
@@ -22,7 +23,7 @@ public class Envio {
     public Envio() {
     }
 
-    public Envio(Integer idEnvio, Integer idOrigen, Integer idDestino, Direccion origen, Direccion destino, Cliente cliente, Double costo, String fecha, String numGuia, List<Paquete> paquetes, Colaborador conductor, List<EstadoEnvio> estadoEnvios, String fechaEntrega) {
+    public Envio(Integer idEnvio, Integer idOrigen, Integer idDestino, Direccion origen, Direccion destino, Cliente cliente, Double costo, String fecha, String numGuia, List<Paquete> paquetes, Colaborador conductor, List<EstadoEnvio> estadoEnvios, String fechaEntrega, Integer idCliente) {
         this.idEnvio = idEnvio;
         this.idOrigen = idOrigen;
         this.idDestino = idDestino;
@@ -34,8 +35,6 @@ public class Envio {
         this.numGuia = numGuia;
         this.paquetes = paquetes;
         this.conductor = conductor;
-        this.estadoEnvios = estadoEnvios;
-        this.fechaEntrega = fechaEntrega;
     }
 
     public Integer getIdEnvio() {
@@ -141,10 +140,20 @@ public class Envio {
     public void setFechaEntrega(String fechaEntrega) {
         this.fechaEntrega = fechaEntrega;
     }
+    
+     public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
 
     @Override
     public String toString() {
-        return "Envio{" + "idEnvio=" + idEnvio + ", idOrigen=" + idOrigen + ", idDestino=" + idDestino + ", origen=" + origen + ", destino=" + destino + ", cliente=" + cliente + ", conductor=" + conductor + ", costo=" + costo + ", fecha=" + fecha + ", numGuia=" + numGuia + ", paquetes=" + paquetes + ", estadoEnvios=" + estadoEnvios + ", fechaEntrega=" + fechaEntrega + '}';
+        return "Envio{" + "idEnvio=" + idEnvio + ", idOrigen=" + idOrigen + ", idDestino=" + idDestino + ", origen=" + origen + ", destino=" + destino + ", cliente=" + cliente + ", conductor=" + conductor + ", costo=" + costo + ", fecha=" + fecha + ", numGuia=" + numGuia + ", paquetes=" + paquetes + ", estadoEnvios=" + estadoEnvios + ", fechaEntrega=" + fechaEntrega + ", idCliente=" + idCliente + '}';
     }
+    
+    
 
 }

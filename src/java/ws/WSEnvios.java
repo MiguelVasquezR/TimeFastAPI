@@ -24,16 +24,18 @@ import pojo.Envio;
 import pojo.EstadoEnvio;
 import pojo.Mensaje;
 import pojo.Paquete;
+import java.time.LocalDate;
+import java.sql.Date;
 
 @Path("envios")
 public class WSEnvios {
-    
+
     @Context
     private UriInfo context;
-    
+
     public WSEnvios() {
     }
-    
+
     @POST
     @Path("agregar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -41,41 +43,45 @@ public class WSEnvios {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
         Envio envio = gson.fromJson(jsonEnvio, Envio.class);
-        if (ImpDireccion.agregarDireccion(envio.getOrigen()).equals("Guardado")) {
-            int idOrigen = ImpDireccion.obtenerUltimoID();
-            if (idOrigen > 0) {
-                envio.setIdOrigen(idOrigen);
-                if (ImpDireccion.agregarDireccion(envio.getDestino()).equals("Guardado")) {
-                    int idDestino = ImpDireccion.obtenerUltimoID();
+        if (envio != null) {
+
+            if (ImpDireccion.agregarDireccion(envio.getDestino()).equals("Guardado")) {
+                int idDestino = ImpDireccion.obtenerUltimoID();
+
+                if (idDestino > 0) {
+
+                    envio.setIdOrigen(envio.getCliente().getDireccion().getIdDireccion());
                     envio.setIdDestino(idDestino);
-                    if (idDestino > 0) {
-                        if (!ImpEnvio.agregarEnvio(envio)) {
-                            mensaje.setError(false);
-                            mensaje.setMensaje("Se ha agregar el envio correctamente");
-                        } else {
-                            mensaje.setError(true);
-                            mensaje.setMensaje("No es posible agregar el envio");
-                        }
+                    envio.setIdCliente(envio.getCliente().getId());
+                    String fechaActual = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    envio.setFecha(fechaActual);
+
+                    if (!ImpEnvio.agregarEnvio(envio)) {
+                        mensaje.setError(false);
+                        mensaje.setMensaje("Se ha agregar el envio correctamente");
                     } else {
                         mensaje.setError(true);
-                        mensaje.setMensaje("No se obtuvo el ID");
+                        mensaje.setMensaje("No es posible agregar el envio");
                     }
+
                 } else {
                     mensaje.setError(true);
-                    mensaje.setMensaje("No es posible agregar la dirección de origen");
+                    mensaje.setMensaje("No es posible agregar el envio");
                 }
+
             } else {
                 mensaje.setError(true);
-                mensaje.setMensaje("No se obtuvo el ID");
+                mensaje.setMensaje("No es posible agregar el envio");
             }
+
         } else {
             mensaje.setError(true);
-            mensaje.setMensaje("No es posible agregar la dirección de origen");
+            mensaje.setMensaje("No es posible agregar el envio");
         }
-        
+
         return mensaje;
     }
-    
+
     @PUT
     @Path("actualizar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -84,38 +90,36 @@ public class WSEnvios {
         Gson gson = new Gson();
         if (!json.isEmpty() || json != null) {
             Envio envio = gson.fromJson(json, Envio.class);
-            if (ImpDireccion.actualizarDireccion(envio.getOrigen()).getError()) {
-                if (ImpDireccion.actualizarDireccion(envio.getDestino()).getError()) {
-                    if (ImpEnvio.actualizarenvio(envio)) {
-                        mensaje.setError(false);
-                        mensaje.setMensaje("Se ha actualizado en envio");
-                    } else {
-                        mensaje.setError(true);
-                        mensaje.setMensaje("No es posible actualizar el envio");
-                    }
+            envio.setIdOrigen(envio.getCliente().getDireccion().getIdDireccion());
+            envio.setIdCliente(envio.getCliente().getId());
+            if (!ImpDireccion.actualizarDireccion(envio.getDestino()).getError()) {
+                if (!ImpEnvio.actualizarEnvio(envio)) {
+                    mensaje.setError(false);
+                    mensaje.setMensaje("Se ha actualizado en envio");
                 } else {
                     mensaje.setError(true);
-                    mensaje.setMensaje("No es posible actualizar la dirección");
+                    mensaje.setMensaje("No es posible actualizar el envio");
                 }
-                
             } else {
                 mensaje.setError(true);
                 mensaje.setMensaje("No es posible actualizar la dirección");
             }
-            
+
         } else {
             mensaje.setError(true);
-            mensaje.setMensaje("Debe ingresar información valida");
+            mensaje.setMensaje("No es posible actualizar la dirección");
         }
+
         return mensaje;
     }
-    
+
     @GET
     @Path("consultar/{numGuia}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje consultarEnvioNumGuia(@PathParam("numGuia") String numGuia) {
         Mensaje mensaje = new Mensaje();
         Envio envio = ImpEnvio.consultarEnvioNumGuia(numGuia);
+
         if (envio != null) {
             Gson gson = new Gson();
             List<Paquete> listaPaquetes = ImpPaquete.obtenerPaqueteEnvio(envio.getIdEnvio());
@@ -127,17 +131,20 @@ public class WSEnvios {
             mensaje.setObjeto(gson.toJson(envio));
             return mensaje;
         }
+
         throw new BadRequestException();
     }
-    
+
     @PUT
     @Path("actualizar-estado-envio")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje actualizarEstadoEnvio(String jsonEstado) {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
+
         if (!jsonEstado.equals("") || jsonEstado != null) {
-            EstadoEnvio estadoEnvio = gson.fromJson(jsonEstado, EstadoEnvio.class);
+            EstadoEnvio estadoEnvio = gson.fromJson(jsonEstado, EstadoEnvio.class
+            );
             if (ImpEstadoEnvio.actualizarEstado(estadoEnvio)) {
                 mensaje.setError(false);
                 mensaje.setMensaje("Se ha actualizado el estado");
@@ -150,27 +157,27 @@ public class WSEnvios {
         }
         throw new BadRequestException();
     }
-    
+
     @GET
     @Path("consultar-estado/{idEnvio}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje obtenerEstadoEnvio(@PathParam("idEnvio") int idEnvio) {
         Mensaje mensaje = new Mensaje();
-        
+
         if (idEnvio <= 0) {
             throw new BadRequestException();
         }
-        
+        Gson gson = new Gson();
         EstadoEnvio estadoEnvio = ImpEstadoEnvio.obtenerEstadoEnvio(idEnvio);
         if (estadoEnvio != null) {
             mensaje.setError(false);
             mensaje.setMensaje("Estado del envio encontrado");
-            mensaje.setObjeto(estadoEnvio);
+            mensaje.setObjeto(gson.toJson(estadoEnvio));
             return mensaje;
         }
         throw new BadRequestException();
     }
-    
+
     @GET
     @Path("detalles-envio/{idEnvio}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -185,14 +192,16 @@ public class WSEnvios {
         }
         throw new BadRequestException();
     }
-    
+
     @POST
     @Path("nuevo-estado")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje nuevoEstadoEnvio(String jsonEstado) {
         Gson gson = new Gson();
+
         if (jsonEstado != null && !jsonEstado.isEmpty()) {
-            EstadoEnvio ee = gson.fromJson(jsonEstado, EstadoEnvio.class);
+            EstadoEnvio ee = gson.fromJson(jsonEstado, EstadoEnvio.class
+            );
             LocalDateTime ahora = LocalDateTime.now();
             DateTimeFormatter formatoSQL = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String fechaEnSQL = ahora.format(formatoSQL);
@@ -201,13 +210,13 @@ public class WSEnvios {
         }
         throw new BadRequestException();
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public String getXml() {
         throw new UnsupportedOperationException();
     }
-    
+
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
@@ -229,7 +238,7 @@ public class WSEnvios {
         }
         return mensaje;
     }
-    
+
     @GET
     @Path("todos-envios")
     @Produces(MediaType.APPLICATION_JSON)
@@ -248,7 +257,6 @@ public class WSEnvios {
         return mensaje;
     }
 
-    
     @GET
     @Path("todos-id-envio")
     @Produces(MediaType.APPLICATION_JSON)
@@ -265,7 +273,7 @@ public class WSEnvios {
         }
         return mensaje;
     }
-    
+
     @PUT
     @Path("asignar-conductor/{idEnvio}/{idConductor}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -290,49 +298,48 @@ public class WSEnvios {
         return mensaje;
     }
 
-@POST
-@Path("agregar-con-cliente/{idCliente}")
-@Produces(MediaType.APPLICATION_JSON)
-public Mensaje agregarEnvioConCliente(@PathParam("idCliente") int idCliente, String jsonEnvio) {
-    Mensaje mensaje = new Mensaje();
-    Gson gson = new Gson();
-    Envio envio = gson.fromJson(jsonEnvio, Envio.class);
+    @POST
+    @Path("agregar-con-cliente/{idCliente}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje agregarEnvioConCliente(@PathParam("idCliente") int idCliente, String jsonEnvio) {
+        Mensaje mensaje = new Mensaje();
+        Gson gson = new Gson();
+        Envio envio = gson.fromJson(jsonEnvio, Envio.class
+        );
 
-    if (ImpDireccion.agregarDireccion(envio.getOrigen()).equals("Guardado")) {
-        int idOrigen = ImpDireccion.obtenerUltimoID();
-        if (idOrigen > 0) {
-            envio.setIdOrigen(idOrigen);
-            if (ImpDireccion.agregarDireccion(envio.getDestino()).equals("Guardado")) {
-                int idDestino = ImpDireccion.obtenerUltimoID();
-                envio.setIdDestino(idDestino);
-                if (idDestino > 0) {
-                    if (!ImpEnvio.agregarEnvioConCliente(envio, idCliente)) {
-                        mensaje.setError(false);
-                        mensaje.setMensaje("Se ha agregado el envío correctamente.");
+        if (ImpDireccion.agregarDireccion(envio.getOrigen()).equals("Guardado")) {
+            int idOrigen = ImpDireccion.obtenerUltimoID();
+            if (idOrigen > 0) {
+                envio.setIdOrigen(idOrigen);
+                if (ImpDireccion.agregarDireccion(envio.getDestino()).equals("Guardado")) {
+                    int idDestino = ImpDireccion.obtenerUltimoID();
+                    envio.setIdDestino(idDestino);
+                    if (idDestino > 0) {
+                        if (!ImpEnvio.agregarEnvioConCliente(envio, idCliente)) {
+                            mensaje.setError(false);
+                            mensaje.setMensaje("Se ha agregado el envío correctamente.");
+                        } else {
+                            mensaje.setError(true);
+                            mensaje.setMensaje("No es posible agregar el envío.");
+                        }
                     } else {
                         mensaje.setError(true);
-                        mensaje.setMensaje("No es posible agregar el envío.");
+                        mensaje.setMensaje("No se obtuvo el ID de destino.");
                     }
                 } else {
                     mensaje.setError(true);
-                    mensaje.setMensaje("No se obtuvo el ID de destino.");
+                    mensaje.setMensaje("No es posible agregar la dirección de destino.");
                 }
             } else {
                 mensaje.setError(true);
-                mensaje.setMensaje("No es posible agregar la dirección de destino.");
+                mensaje.setMensaje("No se obtuvo el ID de origen.");
             }
         } else {
             mensaje.setError(true);
-            mensaje.setMensaje("No se obtuvo el ID de origen.");
+            mensaje.setMensaje("No es posible agregar la dirección de origen.");
         }
-    } else {
-        mensaje.setError(true);
-        mensaje.setMensaje("No es posible agregar la dirección de origen.");
+
+        return mensaje;
     }
 
-    return mensaje;
-}
-
-    
-    
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="conductores">
+
+    <select id="loginConductor" resultMap="ColaboradorResultMap">
+        SELECT 
+            c.id AS idColaborador,
+            c.noPersonal,
+            c.contrasena,
+            c.idPersona,
+            p.nombre AS persona_nombre,
+            p.apellidoPaterno AS persona_apellidoPaterno,
+            p.apellidoMaterno AS persona_apellidoMaterno,
+            r.id AS rol_id,
+            r.rol AS rol_rol
+        FROM Colaborador c
+        INNER JOIN Persona p ON c.idPersona = p.id
+        LEFT JOIN RolColaborador r ON r.idColaborador = c.id
+        WHERE c.noPersonal = #{noPersonal} AND c.contrasena = #{password}
+    </select>
+
+    <resultMap id="ColaboradorResultMap" type="pojo.Colaborador">
+        <id property="idColaborador" column="idColaborador" />
+        <result property="noPersonal" column="noPersonal" />
+        <result property="contrasena" column="contrasena" />
+        <result property="idPersona" column="idPersona" />
+        <association property="persona" javaType="pojo.Persona">
+            <result property="nombre" column="persona_nombre" />
+            <result property="apellidoPaterno" column="persona_apellidoPaterno" />
+            <result property="apellidoMaterno" column="persona_apellidoMaterno" />
+        </association>
+        <association property="rol" javaType="pojo.RolColaborador">
+            <id property="id" column="rol_id" />
+            <result property="rol" column="rol_rol" />
+        </association>
+    </resultMap>
+</mapper>
