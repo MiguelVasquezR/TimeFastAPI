@@ -98,8 +98,20 @@ public class WSUnidad {
     @Path("asociar-conductor/{idConductor}/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje asociarConductor(@PathParam("idConductor") Integer idConductor, @PathParam("id") Integer id) {
+        
+        if(idConductor == 0){
+            return ImpUnidad.desasignarConductor(id);
+        }
+        
+        
         if ((idConductor != null && id != null) && idConductor > 0 && id > 0) {
-            Mensaje res = ImpUnidad.conductorAsociado(idConductor);
+            Mensaje res = new Mensaje();
+            if (ImpUnidad.esConductorAsignado(idConductor)) {
+                res.setError(true);
+                res.setMensaje("El conductor ya está asignado a una unidad");
+                return res;
+            }
+            res = ImpUnidad.conductorAsociado(idConductor);
             if (res.getError() == true) {
                 return res;
             } else {

@@ -86,6 +86,26 @@ public class ImpUnidad {
         }
     }
 
+    public static Boolean esConductorAsignado(Integer id) {
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        if (conexion != null) {
+            try {
+                Integer res = conexion.selectOne("unidades.validarConductorAsignado", id);
+                conexion.commit();
+                if (res > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public static List<Unidad> obtenerUnidades() {
         List<Unidad> unidades = new ArrayList<Unidad>();
         SqlSession conexionBD = MyBatisUtil.obtenerConexion();
@@ -204,6 +224,34 @@ public class ImpUnidad {
             msj.setMensaje("Por el momento el servicio no está disponible, intentelo más tarde.");
         }
         return msj;
+    }
+
+    public static Mensaje desasignarConductor(Integer id) {
+
+        Mensaje msj = new Mensaje();
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                int res = conexionBD.update("unidades.desasignarConductor", id);
+                conexionBD.commit();
+                if (res > 0) {
+                    msj.setError(false);
+                    msj.setMensaje("Conductor desasignado");
+                } else {
+                    msj.setError(true);
+                    msj.setMensaje("Por el momento no se puede desasignado el conductor, intentelo más tarde");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                msj.setError(true);
+                msj.setMensaje("Por el momento no se puede desasignado el conductor, intentelo más tarde");
+            }
+        } else {
+            msj.setError(true);
+            msj.setMensaje("Por el momento no se puede desasignado el conductor, intentelo más tarde");;
+        }
+        return msj;
+
     }
 
 }

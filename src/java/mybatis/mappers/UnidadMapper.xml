@@ -87,6 +87,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="conductorAsociado" resultType="Integer">
         SELECT id FROM Unidad Where idConductor = #{idConductor}
     </select>
+    
+    <select id="validarConductorAsignado">
+        SELECT id  FROM Unidad WHERE idConductor = #{id};
+    </select>
+    
+    <update id="desasignarConductor">
+        UPDATE Unidad SET idConductor = NULL WHERE id = #{id}
+    </update>
   
     
 </mapper>
