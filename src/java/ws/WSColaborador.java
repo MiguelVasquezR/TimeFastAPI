@@ -86,7 +86,7 @@ public class WSColaborador {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
         Colaborador colaborador = gson.fromJson(jsonColaborador, Colaborador.class);
-        if (colaborador.getIdColaborador() > 0 && colaborador.getPersona().getIdPersona() > 0 && colaborador.getRol().getIdRolColaborador() > 0) {
+        if (colaborador.getIdColaborador() > 0 && colaborador.getPersona().getIdPersona() > 0 && colaborador.getRol().getId() > 0) {
             Boolean respuestaPersona = ImpPersona.actualizarPersona(colaborador.getPersona()).getError();
             if (!respuestaPersona) {
                 Boolean respuestaColaborador = ImpColaborador.actualizarColaborador(colaborador);
@@ -118,9 +118,9 @@ public class WSColaborador {
     public Mensaje eliminarColaborador(String idColaborador) {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
-        Colaborador colaborador = gson.fromJson(idColaborador, Colaborador.class);
-        if (colaborador.getIdColaborador() > 0 && colaborador.getIdPersona() > 0 && colaborador.getRol().getIdRolColaborador() > 0) {
-            Boolean respuestaRolColab = ImpRolColaborador.eliminarRolColaborador(colaborador.getRol().getIdRolColaborador());
+        Colaborador colaborador = gson.fromJson(idsColaborador, Colaborador.class);
+        if (colaborador.getIdColaborador() > 0 && colaborador.getIdPersona() > 0 && colaborador.getRol().getId() > 0) {
+            Boolean respuestaRolColab = ImpRolColaborador.eliminarRolColaborador(colaborador.getRol().getId());
             if (!respuestaRolColab) {
                 Boolean respuestaColab = ImpColaborador.eliminarColaborador(colaborador.getIdColaborador());
                 if (!respuestaColab) {

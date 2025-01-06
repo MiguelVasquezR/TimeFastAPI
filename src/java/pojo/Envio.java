@@ -1,7 +1,6 @@
 package pojo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Envio {
 
@@ -36,8 +35,6 @@ public class Envio {
         this.paquetes = paquetes;
         this.conductor = conductor;
         this.estadoEnvios = estadoEnvios;
-        this.fechaEntrega = fechaEntrega;
-        this.idCliente = idCliente;
     }
 
     public Integer getIdEnvio() {
@@ -156,5 +153,7 @@ public class Envio {
     public String toString() {
         return "Envio{" + "idEnvio=" + idEnvio + ", idOrigen=" + idOrigen + ", idDestino=" + idDestino + ", origen=" + origen + ", destino=" + destino + ", cliente=" + cliente + ", conductor=" + conductor + ", costo=" + costo + ", fecha=" + fecha + ", numGuia=" + numGuia + ", paquetes=" + paquetes + ", estadoEnvios=" + estadoEnvios + ", fechaEntrega=" + fechaEntrega + ", idCliente=" + idCliente + '}';
     }
+    
+    
 
 }

@@ -29,13 +29,13 @@ import java.sql.Date;
 
 @Path("envios")
 public class WSEnvios {
-
+    
     @Context
     private UriInfo context;
-
+    
     public WSEnvios() {
     }
-
+    
     @POST
     @Path("agregar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -78,10 +78,10 @@ public class WSEnvios {
             mensaje.setError(true);
             mensaje.setMensaje("No es posible agregar el envio");
         }
-
+        
         return mensaje;
     }
-
+    
     @PUT
     @Path("actualizar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -104,19 +104,26 @@ public class WSEnvios {
                     mensaje.setError(true);
                     mensaje.setMensaje("No es posible actualizar la dirección");
                 }
+                
+            } else {
+                mensaje.setError(true);
+                mensaje.setMensaje("No es posible actualizar la dirección");
+            }
+            
         } else {
             mensaje.setError(true);
             mensaje.setMensaje("Debe ingresar información valida");
         }
         return mensaje;
     }
-
+    
     @GET
     @Path("consultar/{numGuia}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje consultarEnvioNumGuia(@PathParam("numGuia") String numGuia) {
         Mensaje mensaje = new Mensaje();
         Envio envio = ImpEnvio.consultarEnvioNumGuia(numGuia);
+        
         if (envio != null) {
             Gson gson = new Gson();
             List<Paquete> listaPaquetes = ImpPaquete.obtenerPaqueteEnvio(envio.getIdEnvio());
@@ -128,9 +135,10 @@ public class WSEnvios {
             mensaje.setObjeto(gson.toJson(envio));
             return mensaje;
         }
+        
         throw new BadRequestException();
     }
-
+    
     @PUT
     @Path("actualizar-estado-envio")
     @Produces(MediaType.APPLICATION_JSON)
@@ -151,14 +159,14 @@ public class WSEnvios {
         }
         throw new BadRequestException();
     }
-
+    
     @GET
     @Path("consultar-estado/{idEnvio}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje obtenerEstadoEnvio(@PathParam("idEnvio") int idEnvio) {
         Mensaje mensaje = new Mensaje();
-
-        if (idEnvio <= 0) {
+        
+        if(idEnvio <= 0){
             throw new BadRequestException();
         }
         Gson gson = new Gson();
@@ -209,7 +217,7 @@ public class WSEnvios {
     public String getXml() {
         throw new UnsupportedOperationException();
     }
-
+    
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
