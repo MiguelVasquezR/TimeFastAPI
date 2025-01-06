@@ -71,6 +71,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         INNER JOIN Persona p ON c.idPersona = p.id;
     </select>
     
+    <select id="obtenerConductores" resultMap="colaboradorResultMap">
+    SELECT c.id  as idColaborador,
+           c.noPersonal,
+           c.contrasena,
+           p.id  as idPersona,
+           p.nombre,
+           p.apellidoMaterno,
+           p.apellidoPaterno,
+           p.correo,
+           p.foto,
+           p.CURP,
+           rc.id as idRolColaborador,
+           rc.rol,
+           rc.numLicencia
+    FROM Colaborador c
+    INNER JOIN RolColaborador rc ON c.id = rc.idColaborador
+    INNER JOIN Persona p ON c.idPersona = p.id
+    WHERE rc.rol = 'Conductor';
+</select>
+
     <select id="recuperarContrasena" resultMap="colaboradorResultMap">
         SELECT CONCAT(p.nombre, ' ', p.apellidoPaterno, ' ', p.apellidoMaterno) as nombre, c.id as idColaborador FROM Colaborador c INNER JOIN Persona p ON c.idPersona = p.id WHERE p.correo = #{correo};
     </select>
