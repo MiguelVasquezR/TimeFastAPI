@@ -5,21 +5,26 @@
  */
 package ws;
 
+import dominio.ImpLogin;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
+import pojo.Mensaje;
 
 /**
  * REST Web Service
  *
  * @author vasquez
  */
-@Path("api")
+@Path("login")
 public class WSLogin {
 
     @Context
@@ -36,6 +41,28 @@ public class WSLogin {
     @Produces(MediaType.APPLICATION_JSON)
     public String holaMundo() {
         return "Hola mundo";
+    }
+
+    @POST
+    @Path("login-colaborador-conductor")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje validarCredencialesColaboradorConductor(@FormParam("noPersonal") Integer noPersonal,
+            @FormParam("password") String password) {
+        if ((noPersonal != null && password != null) && noPersonal > 0 && !password.isEmpty()) {
+            return ImpLogin.validarCredencialesLogin(noPersonal, password, true);
+        }
+        throw new BadRequestException();
+    }
+    
+    @POST
+    @Path("login-colaborador")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje validarCredencialesColaborador(@FormParam("noPersonal") Integer noPersonal,
+            @FormParam("password") String password) {
+        if ((noPersonal != null && password != null) && noPersonal > 0 && !password.isEmpty()) {
+            return ImpLogin.validarCredencialesLogin(noPersonal, password, false);
+        }
+        throw new BadRequestException();
     }
 
     /**

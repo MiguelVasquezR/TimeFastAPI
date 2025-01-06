@@ -2,6 +2,7 @@ package ws;
 
 import com.google.gson.Gson;
 import dominio.ImpPaquete;
+import java.util.List;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -25,13 +26,13 @@ import javax.ws.rs.PathParam;
  */
 @Path("paquetes")
 public class WSPaquete {
-    
+
     @Context
     private UriInfo context;
-    
+
     public WSPaquete() {
     }
-    
+
     @POST
     @Path("agregar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,7 +52,7 @@ public class WSPaquete {
         }
         throw new BadRequestException();
     }
-    
+
     @PUT
     @Path("actualizar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -71,7 +72,7 @@ public class WSPaquete {
         }
         throw new BadRequestException();
     }
-    
+
     @DELETE
     @Path("eliminar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -89,16 +90,17 @@ public class WSPaquete {
         }
         throw new BadRequestException();
     }
-    
+
     @GET
     @Path("consultar-paquete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje obtenerPaqueteID(@PathParam("id") Integer id) {
         Mensaje mensaje = new Mensaje();
+        Gson gson = new Gson();
         if (id > 0) {
             Paquete respuesta = ImpPaquete.obtenerPaquetePorID(id);
             if (respuesta != null) {
-                mensaje.setObjeto(respuesta);
+                mensaje.setObjeto(gson.toJson(respuesta));
                 mensaje.setError(false);
                 mensaje.setMensaje("Paquete obtenido");
             } else {
@@ -111,14 +113,46 @@ public class WSPaquete {
     }
     
     @GET
+    @Path("obtener-paquetes-por-envio/{idEnvio}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje obtenerPaquetesPorEnvio(@PathParam("idEnvio") Integer idEnvio) {
+        Mensaje mensaje = new Mensaje();
+        Gson gson = new Gson();
+        if (idEnvio != null && idEnvio > 0) {
+            List<Paquete> paquetes = ImpPaquete.obtenerPaquetesPorEnvio(idEnvio);
+            if (paquetes != null && !paquetes.isEmpty()) {
+                mensaje.setObjeto(gson.toJson(paquetes));
+                mensaje.setError(false);
+                mensaje.setMensaje("Paquetes obtenidos correctamente");
+            } else {
+                mensaje.setError(true);
+                mensaje.setMensaje("No se encontraron paquetes para el envío con ID: " + idEnvio);
+            }
+            return mensaje;
+        }
+        throw new BadRequestException("El ID del envío debe ser mayor a 0");
+    }
+
+
+    @GET
+    @Path("obtener-paquetes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Paquete> obtenerPaquetes() {
+        return ImpPaquete.obtenerPaquetes();
+    }
+
+    @GET
     @Produces(MediaType.APPLICATION_XML)
     public String getXml() {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
-    
+
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
     }
+    
+
+    
 }

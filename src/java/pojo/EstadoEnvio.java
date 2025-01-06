@@ -7,6 +7,7 @@ public class EstadoEnvio {
     private Envio envio;
     private String fecha;
     private String descripcion;
+    private String estado;
 
     public EstadoEnvio() {
     }
@@ -61,7 +62,7 @@ public class EstadoEnvio {
 
     @Override
     public String toString() {
-        return "EstadoEnvio{" + "idEstadoEnvio=" + idEstadoEnvio + ", idEnvio=" + idEnvio + ", envio=" + envio + ", fecha=" + fecha + ", descripcion=" + descripcion + '}';
+        return "EstadoEnvio{" + "idEstadoEnvio=" + idEstadoEnvio + ", idEnvio=" + idEnvio + ", envio=" + envio + ", fecha=" + fecha + ", descripcion=" + descripcion + ", estado=" + estado + '}';
     }
     
     

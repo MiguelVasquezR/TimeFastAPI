@@ -135,4 +135,36 @@ public class ImpCliente {
         return existeCliente;
     }
 
+    public static Mensaje obtenerClienteNombre(String nombreCompleto) {
+        Mensaje msj = new Mensaje();
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        Boolean existeCliente = false;
+        Gson gson = new Gson();
+        if (conexion != null) {
+            try {
+                List<Integer> listaIdentificadores = conexion.selectList("clientes.buscarClienteNombre", nombreCompleto);
+                conexion.commit();
+                if (listaIdentificadores.size() == 0) {
+                    msj.setError(true);
+                    msj.setMensaje("No se ha encontrado cliente con ese nombre");
+                } else if (listaIdentificadores.size() == 1) {
+                    msj.setError(false);
+                    msj.setMensaje("Se ha encontrado al cliente");
+                    msj.setObjeto(gson.toJson(listaIdentificadores.get(0)));
+                }else if(listaIdentificadores.size() >= 2){
+                    msj.setError(true);
+                    msj.setMensaje("Al parecer hay más clientes con ese nombre, intenta con el nombre completo.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                msj.setError(true);
+                msj.setMensaje("No se ha podido identificar al cliente");
+            }
+        } else {
+            msj.setError(true);
+            msj.setMensaje("No se ha podido identificar al cliente");
+        }
+        return msj;
+    }
+
 }

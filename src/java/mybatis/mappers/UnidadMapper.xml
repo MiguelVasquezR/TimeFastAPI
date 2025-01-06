@@ -79,6 +79,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         UPDATE Unidad SET marca = #{marca}, modelo=#{modelo}, 
         anio=#{anio}, numIdentificacion = #{numIdentificacion}, tipo=#{tipo} WHERE id = #{id};
     </update>
+    
+    <update id="asociarConductor">
+        UPDATE Unidad SET idConductor = #{idConductor} WHERE id=#{id}
+    </update>
+    
+    <select id="conductorAsociado" resultType="Integer">
+        SELECT id FROM Unidad Where idConductor = #{idConductor}
+    </select>
   
     
 </mapper>

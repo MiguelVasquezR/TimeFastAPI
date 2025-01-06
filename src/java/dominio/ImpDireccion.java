@@ -1,5 +1,6 @@
 package dominio;
 
+import java.util.ArrayList;
 import java.util.List;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
@@ -96,6 +97,25 @@ public class ImpDireccion {
             mensaje.setMensaje("Por el momento el servicio no está disponibles, intentelo más tarde");
         }
         return mensaje;
+    }
+     
+     public static List<Direccion> obtenerDireccionesOrigen() {
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        List<Direccion> direcciones = new ArrayList<>();
+        if (conexion != null) {
+            try {
+                direcciones = conexion.selectList("direccion.obtenerDireccionesOrigen");
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    conexion.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return direcciones;
     }
 
 }

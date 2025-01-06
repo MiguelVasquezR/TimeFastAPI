@@ -5,20 +5,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="envios" >
     
+    <update id="asignarConductor" parameterType="map">
+        UPDATE Envio 
+        SET idConductor = #{idConductor}
+        WHERE id = #{idEnvio};
+    </update>
+
+    <select id="obtenerTodosIdEnvio" resultType="int">
+        SELECT id FROM Envio;
+    </select>
+    
     <insert id="agregar" parameterType="pojo.Envio" >
-        INSERT INTO Envio (idOrigen, idDestino, costo, fecha, numGuia) 
+        INSERT INTO Envio (idOrigen, idDestino, costo, fecha, numGuia, fechaEntrega, idCliente) 
         VALUES 
         (
         #{idOrigen},
         #{idDestino},
         #{costo},
         #{fecha},
-        #{numGuia}
+        #{numGuia},
+        #{fechaEntrega},
+        #{idCliente}
         )
     </insert>
     
     <update id="actualizar" parameterType="pojo.Envio">
-        UPDATE Envio SET costo=#{costo}, fecha=#{fecha}  WHERE id = #{idEnvio}
+        UPDATE Envio 
+        SET 
+        idOrigen = #{idOrigen},
+        costo = #{costo},
+        fecha = #{fecha},
+        fechaEntrega = #{fechaEntrega},
+        idCliente = #{idCliente}
+        WHERE 
+        id = #{idEnvio};
     </update>
     
     <delete id="eliminar" parameterType="Integer" >
@@ -29,12 +49,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM Envio WHERE id = #{id}
     </select>
     
+    <select id="obtenerTodosNumGuia" resultType="String">
+        SELECT numGuia FROM Envio
+    </select>
+    
     <resultMap id="envioNumGuia" type="pojo.Envio">
-         
         <id property="idEnvio" column="idEnvio" />
         <result property="numGuia" column="numGuia" />
         <result property="fecha" column="fecha" />
         <result property="costo" column="costo" />
+        <result property="fechaEntrega" column="fechaEntrega" />
+        
         
         <association property="origen" javaType="pojo.Direccion">
             <id property="idDireccion" column="idDireccionOrigen" />
@@ -55,51 +80,151 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <result property="ciudad" column="ciudadDestino" />
             <result property="estado" column="estadoDestino" />
         </association>
+      
+        <association property="conductor" javaType="pojo.Colaborador" column="idConductor">
+            <id property="idColaborador" column="idColaborador" />
+            <result property="noPersonal" column="noPersonalConductor" />
+            <association property="persona" javaType="pojo.Persona" column="idColaborador">
+                <id property="idPersona" column="idColaborador" />
+                <result property="nombre" column="nombreConductor" />
+                <result property="apellidoPaterno" column="apellidoPaternoConductor" />
+                <result property="apellidoMaterno" column="apellidoMaternoConductor" />
+                <result property="correo" column="correoConductor" />
+                <result property="CURP" column="curpConductor" />
+            </association>
+        </association>
+
         
-        <association property="conductor" javaType="pojo.Colaborador">
-            <id property="idDireccion" column="idDireccionDestino" />
-            <result property="calle" column="calleDestino" />
-            <result property="colonia" column="coloniaDestino" />
-            <result property="numero" column="numeroDestino" />
-            <result property="codigoPostal" column="codigoPostalDestino" />
-            <result property="ciudad" column="ciudadDestino" />
-            <result property="estado" column="estadoDestino" />
+        <association property="cliente" javaType="pojo.Cliente">
+            <id property="id" column="idCliente" />
+            <result property="telefono" column="telefonoCliente" />
+            
+            <association property="persona" javaType="pojo.Persona">
+                <id property="idPersona" column="idPersonaCliente" />
+                <result property="nombre" column="nombreCliente" />
+                <result property="apellidoPaterno" column="apellidoPaternoCliente" />
+                <result property="apellidoMaterno" column="apellidoMaternoCliente" />
+            </association>
+            
         </association>
         
     </resultMap>
     
     <select id="consultarPorNumGuia" resultMap="envioNumGuia">
-        SELECT e.id              as idEnvio,
+        SELECT
+        e.id AS idEnvio,
         e.numGuia,
         e.fecha,
         e.costo,
-        d.id              as idDireccionOrigen,
-        d.calle           as calleOrigen,
-        d.numero          as numeroOrigen,
-        d.colonia         as coloniaOrigen,
-        d.codigoPostal    as codigoPostalOrigen,
-        d.ciudad          as ciudadOrigen,
-        d.estado          as estadoOrigen,
-        d2.id             as idDireccionDestino,
-        d2.calle          as calleDestino,
-        d2.numero         as numeroDestino,
-        d2.colonia        as coloniaDestino,
-        d2.codigoPostal   as codigoPostalDestino,
-        d2.ciudad         as ciudadDestino,
-        d2.estado         as estadoDestino,
-        c.id              as idConductor,
-        p.id as idColaborador,
-        p.nombre          as nombreConductor,
-        p.apellidoPaterno as apellidoPaternoConductor,
-        p.apellidoMaterno as apellidoMaternoConductor,
-        p.foto            as fotoConductor
-        FROM Envio e
+        e.fechaEntrega,
+
+        d.id AS idDireccionOrigen,
+        d.calle AS calleOrigen,
+        d.numero AS numeroOrigen,
+        d.colonia AS coloniaOrigen,
+        d.codigoPostal AS codigoPostalOrigen,
+        d.ciudad AS ciudadOrigen,
+        d.estado AS estadoOrigen,
+
+        d2.id AS idDireccionDestino,
+        d2.calle AS calleDestino,
+        d2.numero AS numeroDestino,
+        d2.colonia AS coloniaDestino,
+        d2.codigoPostal AS codigoPostalDestino,
+        d2.ciudad AS ciudadDestino,
+        d2.estado AS estadoDestino,
+
+        c.id AS idConductor,
+        c.noPersonal AS noPersonalConductor,
+        p.id AS idColaborador,
+        p.nombre AS nombreConductor,
+        p.apellidoPaterno AS apellidoPaternoConductor,
+        p.apellidoMaterno AS apellidoMaternoConductor,
+        p.foto AS fotoConductor,
+        p.CURP AS curpConductor,
+        p.correo AS correoConductor,
+
+        cl.id AS idCliente,
+        cl.telefono AS telefonoCliente,
+        pcl.id as idPersonaCliente,
+        pcl.nombre AS nombreCliente,
+        pcl.apellidoPaterno AS apellidoPaternoCliente,
+        pcl.apellidoMaterno AS apellidoMaternoCliente
+        FROM
+        Envio e
         INNER JOIN Direccion d ON e.idOrigen = d.id
         INNER JOIN Direccion d2 ON e.idDestino = d2.id
         INNER JOIN Colaborador c ON e.idConductor = c.id
         INNER JOIN Persona p ON c.idPersona = p.id
-        WHERE e.numGuia = #{numGuia}
+        INNER JOIN Cliente cl ON e.idCliente = cl.id
+        INNER JOIN Persona pcl ON cl.idPersona = pcl.id
+        WHERE
+        e.numGuia = #{numGuia}
     </select>
-   
     
+    <select id="obtenerTodos" resultMap="envioNumGuia">
+        SELECT
+        e.id AS idEnvio,
+        e.numGuia,
+        e.fecha,
+        e.costo,
+
+        d.id AS idDireccionOrigen,
+        d.calle AS calleOrigen,
+        d.numero AS numeroOrigen,
+        d.colonia AS coloniaOrigen,
+        d.codigoPostal AS codigoPostalOrigen,
+        d.ciudad AS ciudadOrigen,
+        d.estado AS estadoOrigen,
+
+        d2.id AS idDireccionDestino,
+        d2.calle AS calleDestino,
+        d2.numero AS numeroDestino,
+        d2.colonia AS coloniaDestino,
+        d2.codigoPostal AS codigoPostalDestino,
+        d2.ciudad AS ciudadDestino,
+        d2.estado AS estadoDestino,
+
+        c.id AS idConductor,
+        c.noPersonal AS noPersonalConductor,
+        p.id AS idColaborador,
+        p.nombre AS nombreConductor,
+        p.apellidoPaterno AS apellidoPaternoConductor,
+        p.apellidoMaterno AS apellidoMaternoConductor,
+        p.foto AS fotoConductor,
+        p.CURP AS curpConductor,
+        p.correo AS correoConductor,
+
+        cl.id AS idCliente,
+        cl.telefono AS telefonoCliente,
+        pcl.id as idPersonaCliente,
+        pcl.nombre AS nombreCliente,
+        pcl.apellidoPaterno AS apellidoPaternoCliente,
+        pcl.apellidoMaterno AS apellidoMaternoCliente
+        FROM
+        Envio e
+        INNER JOIN Direccion d ON e.idOrigen = d.id
+        INNER JOIN Direccion d2 ON e.idDestino = d2.id
+        LEFT JOIN Colaborador c ON e.idConductor = c.id
+        LEFT JOIN Persona p ON c.idPersona = p.id
+        INNER JOIN Cliente cl ON e.idCliente = cl.id
+        INNER JOIN Persona pcl ON cl.idPersona = pcl.id;
+
+    </select>
+
+    <insert id="agregarConCliente" parameterType="pojo.Envio">
+        INSERT INTO Envio (idOrigen, idDestino, idCliente, costo, fecha, numGuia, fechaEntrega) 
+        VALUES 
+        (
+        #{idOrigen},
+        #{idDestino},
+        #{cliente.id}, 
+        #{costo},
+        #{fecha},
+        #{numGuia},
+        #{fechaEntrega}
+        )
+    </insert>
+
+
 </mapper>

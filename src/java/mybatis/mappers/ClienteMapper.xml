@@ -73,4 +73,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT id FROM Cliente WHERE telefono = #{telefono};
     </select>
     
+    <select id="buscarClienteNombre" parameterType="String" resultMap="clienteResultMap">
+        SELECT c.id,
+        c.telefono,
+        p.id as idPersona,
+        p.nombre,
+        p.apellidoPaterno,
+        p.apellidoMaterno,
+        p.correo,
+        p.CURP,
+        p.foto,
+        d.id as idDireccion,
+        d.calle,
+        d.numero,
+        d.colonia,
+        d.codigoPostal,
+        d.ciudad,
+        d.estado
+        FROM Cliente AS c
+        INNER JOIN Direccion AS d ON c.idDireccion = d.id
+        INNER JOIN Persona AS p ON c.idPersona = p.id
+        WHERE CONCAT(p.nombre, ' ', p.apellidoPaterno, ' ', p.apellidoMaterno) LIKE CONCAT('%', #{nombreCompleto}, '%');
+    </select>
+
+    
 </mapper>

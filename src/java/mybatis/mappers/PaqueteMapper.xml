@@ -16,6 +16,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
     </insert>
     
+    <resultMap id="paqueteResultMap" type="pojo.Paquete">
+        
+        <id property="idPaquete" column="idPaquete" />
+        <result property="descripcion" column="descripcion" />
+        <result property="dimensiones" column="dimensiones" />
+        <result property="peso" column="peso" />
+        
+        <association property="envio" javaType="pojo.Envio">
+            <result property="numGuia" column="numGuia" />
+        </association>
+ 
+    </resultMap>
+    
+    <select id="obtenerPaquetes" resultMap="paqueteResultMap">
+        SELECT p.id as idPaquete, p.descripcion, p.dimensiones, p.peso, e.numGuia FROM Paquete p INNER JOIN Envio e ON p.idEnvio = e.id;
+    </select>
+    
     <update id="actualizar" parameterType="pojo.Paquete">
         UPDATE Paquete SET descripcion = #{descripcion}, dimensiones = #{dimensiones}, peso= #{peso} WHERE id = #{id};
     </update>
@@ -26,6 +43,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="consultar-id" parameterType="Integer" resultType="pojo.Paquete" >
         SELECT id, idEnvio, descripcion, dimensiones, peso FROM Paquete WHERE id = #{id};
+    </select>
+    
+    <select id="obtenerPaquetesEnvio" resultType="pojo.Paquete">
+        SELECT p.id,
+        p.idEnvio,
+        p.descripcion,
+        p.dimensiones,
+        p.peso
+        FROM Paquete p
+        INNER JOIN
+        Envio e ON p.idEnvio = e.id;
+    </select>
+    
+    <select id="obtenerPaquetesPorEnvio" parameterType="int" resultType="pojo.Paquete">
+        SELECT 
+            p.id,
+            p.idEnvio,
+            p.descripcion,
+            p.dimensiones,
+            p.peso
+        FROM 
+            Paquete p
+        WHERE 
+            p.idEnvio = #{idEnvio};
     </select>
    
     

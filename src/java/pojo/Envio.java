@@ -7,6 +7,7 @@ public class Envio {
     private Integer idEnvio;
     private Integer idOrigen;
     private Integer idDestino;
+    private Integer idCliente;
     private Direccion origen;
     private Direccion destino;
     private Cliente cliente;
@@ -14,12 +15,15 @@ public class Envio {
     private Double costo;
     private String fecha;
     private String numGuia;
+    private List<Paquete> paquetes;
+    private List<EstadoEnvio> estadoEnvios;
+    private String fechaEntrega;
     private ArrayList<Paquete> paquetes;
 
     public Envio() {
     }
 
-    public Envio(Integer idEnvio, Integer idOrigen, Integer idDestino, Direccion origen, Direccion destino, Cliente cliente, Double costo, String fecha, String numGuia, ArrayList<Paquete> paquetes, Colaborador conductor) {
+    public Envio(Integer idEnvio, Integer idOrigen, Integer idDestino, Direccion origen, Direccion destino, Cliente cliente, Double costo, String fecha, String numGuia, List<Paquete> paquetes, Colaborador conductor, List<EstadoEnvio> estadoEnvios, String fechaEntrega, Integer idCliente) {
         this.idEnvio = idEnvio;
         this.idOrigen = idOrigen;
         this.idDestino = idDestino;
@@ -105,11 +109,11 @@ public class Envio {
         this.numGuia = numGuia;
     }
 
-    public ArrayList<Paquete> getPaquetes() {
+    public List<Paquete> getPaquetes() {
         return paquetes;
     }
 
-    public void setPaquetes(ArrayList<Paquete> paquetes) {
+    public void setPaquetes(List<Paquete> paquetes) {
         this.paquetes = paquetes;
     }
 
@@ -120,12 +124,34 @@ public class Envio {
     public void setConductor(Colaborador conductor) {
         this.conductor = conductor;
     }
+
+    public List<EstadoEnvio> getEstadoEnvios() {
+        return estadoEnvios;
+    }
+
+    public void setEstadoEnvios(List<EstadoEnvio> estadoEnvios) {
+        this.estadoEnvios = estadoEnvios;
+    }
+
+    public String getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(String fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
     
-    
+     public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
 
     @Override
     public String toString() {
-        return "Envio{" + "idEnvio=" + idEnvio + ", idOrigen=" + idOrigen + ", idDestino=" + idDestino + ", origen=" + origen + ", destino=" + destino + ", cliente=" + cliente + ", costo=" + costo + ", fecha=" + fecha + ", numGuia=" + numGuia + ", paquetes=" + paquetes + '}';
+        return "Envio{" + "idEnvio=" + idEnvio + ", idOrigen=" + idOrigen + ", idDestino=" + idDestino + ", origen=" + origen + ", destino=" + destino + ", cliente=" + cliente + ", conductor=" + conductor + ", costo=" + costo + ", fecha=" + fecha + ", numGuia=" + numGuia + ", paquetes=" + paquetes + ", estadoEnvios=" + estadoEnvios + ", fechaEntrega=" + fechaEntrega + ", idCliente=" + idCliente + '}';
     }
     
     

@@ -10,6 +10,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -36,8 +37,8 @@ public class WSCliente {
         Gson gson = new Gson();
         Cliente cliente = gson.fromJson(jsonCliente, Cliente.class);
         Mensaje mensaje = new Mensaje();
-        
-        if(ImpPersona.validarRepetido(cliente.getPersona()) || ImpCliente.validarRepetido(cliente)){
+
+        if (ImpPersona.validarRepetido(cliente.getPersona()) || ImpCliente.validarRepetido(cliente)) {
             mensaje.setError(true);
             mensaje.setMensaje("El cliente que deseas agregar a nuestro sistema, ya está registrado.");
             return mensaje;
@@ -149,6 +150,16 @@ public class WSCliente {
             byte[] foto) {
         if (idPersona != null && idPersona > 0 && foto != null) {
             return ImpPersona.registrarFoto(idPersona, foto);
+        }
+        throw new BadRequestException();
+    }
+
+    @POST
+    @Path("obtener-cliente-nombre")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje obtenerClienteNombre(@FormParam("nombre") String nombre) {
+        if (!nombre.isEmpty() || !nombre.equals("")) {
+            return ImpCliente.obtenerClienteNombre(nombre);
         }
         throw new BadRequestException();
     }

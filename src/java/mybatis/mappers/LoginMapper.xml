@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="login" >
+    
+    <resultMap id="loginColaboradorMap" type="pojo.Colaborador">
+        <result column="idColaborador" property="idColaborador"/>
+        <result column="noPersonal" property="noPersonal"/>
+        <result column="contrasena" property="contrasena"/>
+        
+        <association property="rol" javaType="pojo.RolColaborador">
+            <id property="idRolColaborador" column="idRolColaborador" />
+            <result property="numLicencia" column="numLicencia" />
+            <result property="rol" column="rol" />
+        </association>
+        
+        <association property="persona" javaType="pojo.Persona">
+            <id property="idPersona" column="idPersona" />
+            <result property="nombre" column="nombre" />
+            <result property="apellidoPaterno" column="apellidoPaterno" />
+            <result property="apellidoMaterno" column="apellidoMaterno" />
+            <result property="correo" column="correo" />
+            <result property="fotoBase64" column="foto" />
+        </association>
+        
+    </resultMap>
+    
+    <select id="loginColaboradorConductor" resultMap="loginColaboradorMap" >
+        SELECT c.id              as idColaborador,
+        c.noPersonal      as noPersonal,
+        c.contrasena as contrasena,
+        p.id              as idPersona,
+        p.nombre          as nombre,
+        p.apellidoPaterno as apellidoPaterno,
+        p.apellidoMaterno as apellidoMaterno,
+        p.correo          as correo,
+        TO_BASE64(p.foto) as foto,
+        rc.id             as idRolColaborador,
+        rc.numLicencia    as numLicencia,
+        rc.rol            as rol
+        FROM Colaborador c
+        INNER JOIN Persona p ON p.id = c.idPersona
+        INNER JOIN RolColaborador rc ON rc.idColaborador = c.id
+        WHERE noPersonal = #{noPersonal}
+        AND contrasena = #{password}
+        AND rc.rol = 'Conductor';
+    </select>
+    
+    
+    <select id="loginColaborador" resultMap="loginColaboradorMap" >
+        SELECT c.id              as idColaborador,
+        c.noPersonal      as noPersonal,
+        p.id              as idPersona,
+        p.nombre          as nombre,
+        p.apellidoPaterno as apellidoPaterno,
+        p.apellidoMaterno as apellidoMaterno,
+        p.correo          as correo,
+        TO_BASE64(p.foto) as foto,
+        rc.id             as idRolColaborador,
+        rc.numLicencia    as numLicencia,
+        rc.rol            as rol
+        FROM Colaborador c
+        INNER JOIN Persona p ON p.id = c.idPersona
+        INNER JOIN RolColaborador rc ON rc.idColaborador = c.id
+        WHERE noPersonal = #{noPersonal}
+        AND contrasena = #{password}
+        AND rc.rol != 'Conductor';
+    </select>
+   
+    
+</mapper>

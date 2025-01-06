@@ -21,6 +21,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <delete id="eliminar" parameterType="Integer">
         DELETE FROM Direccion WHERE id = #{id};
     </delete>
+    
+<select id="obtenerDireccionesOrigen" resultType="pojo.Direccion">
+    SELECT 
+        d.id AS idDireccion,
+        d.calle AS calle,
+        d.numero AS numero,
+        d.colonia AS colonia,
+        d.codigoPostal AS codigoPostal,
+        d.ciudad AS ciudad,
+        d.estado AS estado
+    FROM 
+        Envio e
+    INNER JOIN 
+        Direccion d 
+    ON 
+        e.idOrigen = d.id;
+</select>
+
   
     
 </mapper>
