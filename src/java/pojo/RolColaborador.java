@@ -2,7 +2,7 @@ package pojo;
 
 public class RolColaborador {
 
-    private Integer id;
+    private Integer idRolColaborador;
     private String rol;
     private String numLicencia;
     private Integer idColaborador;
@@ -11,18 +11,18 @@ public class RolColaborador {
     }
 
     public RolColaborador(Integer idRolColaborador, String rol, String numLicencia, Integer idColaborador) {
-        this.id = idRolColaborador;
+        this.idRolColaborador = idRolColaborador;
         this.rol = rol;
         this.numLicencia = numLicencia;
         this.idColaborador = idColaborador;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdRolColaborador() {
+        return idRolColaborador;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdRolColaborador(Integer id) {
+        this.idRolColaborador = id;
     }
 
     public String getRol() {
@@ -51,7 +51,7 @@ public class RolColaborador {
 
     @Override
     public String toString() {
-        return "RolColaborador{" + "id=" + id + ", rol=" + rol + ", numLicencia=" + numLicencia + '}';
+        return "RolColaborador{" + "id=" + idRolColaborador + ", rol=" + rol + ", numLicencia=" + numLicencia + '}';
     }
 
 }

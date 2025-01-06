@@ -60,7 +60,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         p.correo          as correo,
         TO_BASE64(p.foto) as foto,
         rc.id             as idRolColaborador,
-        rc.numLicencia    as numLicencia,
         rc.rol            as rol
         FROM Colaborador c
         INNER JOIN Persona p ON p.id = c.idPersona

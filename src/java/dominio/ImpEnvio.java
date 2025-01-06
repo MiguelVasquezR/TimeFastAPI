@@ -72,7 +72,6 @@ public class ImpEnvio {
         if (conexion != null) {
             try {
                 envio = conexion.selectOne("envios.consultarPorNumGuia", numGuia);
-                System.out.println(envio.toString());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
