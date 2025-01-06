@@ -118,7 +118,7 @@ public class WSColaborador {
     public Mensaje eliminarColaborador(String idColaborador) {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
-        Colaborador colaborador = gson.fromJson(idsColaborador, Colaborador.class);
+        Colaborador colaborador = gson.fromJson(idColaborador, Colaborador.class);
         if (colaborador.getIdColaborador() > 0 && colaborador.getIdPersona() > 0 && colaborador.getRol().getId() > 0) {
             Boolean respuestaRolColab = ImpRolColaborador.eliminarRolColaborador(colaborador.getRol().getId());
             if (!respuestaRolColab) {

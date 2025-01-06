@@ -110,10 +110,7 @@ public class WSEnvios {
                 mensaje.setMensaje("No es posible actualizar la dirección");
             }
             
-        } else {
-            mensaje.setError(true);
-            mensaje.setMensaje("Debe ingresar información valida");
-        }
+         
         return mensaje;
     }
     
