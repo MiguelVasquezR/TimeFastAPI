@@ -1,6 +1,10 @@
 CREATE DATABASE timeFast;
 USE timeFast;
 
+CREATE USER 'timeFastUser'@'localhost' IDENTIFIED BY 'timeFastBaseDatos1234';
+GRANT ALL PRIVILEGES ON timeFast.* TO 'timeFastUser'@'localhost';
+FLUSH PRIVILEGES;
+
 CREATE TABLE Persona
 (
     id              INT PRIMARY KEY AUTO_INCREMENT,

@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
     
     <select id="obtenerPorID" parameterType="Integer" >
-        SELECT * FROM Envio WHERE id = #{id}
+        SELECT id, idOrigen, idDestino, idCliente, idConductor, costo, fecha, numGuia, fechaEntrega FROM Envio WHERE id = 23;
     </select>
     
     <select id="obtenerTodosNumGuia" resultType="String">
