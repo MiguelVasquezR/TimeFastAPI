@@ -1,9 +1,12 @@
 package dominio;
 
+import java.util.ArrayList;
+import java.util.List;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Envio;
 import pojo.EstadoEnvio;
+import pojo.Mensaje;
 
 public class ImpEstadoEnvio {
 

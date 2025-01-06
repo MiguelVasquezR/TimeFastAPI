@@ -1,6 +1,7 @@
 package pojo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Envio {
 
@@ -18,7 +19,6 @@ public class Envio {
     private List<Paquete> paquetes;
     private List<EstadoEnvio> estadoEnvios;
     private String fechaEntrega;
-    private ArrayList<Paquete> paquetes;
 
     public Envio() {
     }
