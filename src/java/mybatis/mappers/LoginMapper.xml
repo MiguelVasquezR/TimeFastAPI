@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <result property="apellidoPaterno" column="apellidoPaterno" />
             <result property="apellidoMaterno" column="apellidoMaterno" />
             <result property="correo" column="correo" />
+            <result property="CURP" column="curp" />
             <result property="fotoBase64" column="foto" />
         </association>
         
@@ -36,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         p.apellidoPaterno as apellidoPaterno,
         p.apellidoMaterno as apellidoMaterno,
         p.correo          as correo,
-        TO_BASE64(p.foto) as foto,
+        p.CURP            as curp,
         rc.id             as idRolColaborador,
         rc.numLicencia    as numLicencia,
         rc.rol            as rol

@@ -27,6 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         UPDATE Persona SET foto=#{foto} WHERE id=#{id}
     </update>
     
+    <select id="obtenerFoto" parameterType="int" resultType="string">
+        SELECT TO_BASE64(foto) AS foto
+        FROM Persona
+        WHERE id = #{id}
+    </select>
+    
     <select id="validarRepetido" resultType="Integer" >
         SELECT id 
         FROM Persona 

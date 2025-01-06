@@ -134,6 +134,35 @@ public class ImpPersona {
         }
         return mensaje;
     }
+    
+    public static Mensaje obtenerFoto(int id) {
+        Mensaje mensaje = new Mensaje();
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        if (conexion != null) {
+            try {
+                String fotoBase64 = conexion.selectOne("personas.obtenerFoto", id);
+                if (fotoBase64 != null) {
+                    mensaje.setError(false);
+                    mensaje.setMensaje("Foto obtenida con éxito");
+                    mensaje.setObjeto(fotoBase64);
+                } else {
+                    mensaje.setError(true);
+                    mensaje.setMensaje("No se encontró la foto para el ID proporcionado");
+                }
+            } catch (Exception e) {
+                mensaje.setError(true);
+                mensaje.setMensaje("Error al obtener la foto: " + e.getMessage());
+            } finally {
+                conexion.close();
+            }
+        } else {
+            mensaje.setError(true);
+            mensaje.setMensaje("No se pudo establecer conexión con la base de datos");
+        }
+        return mensaje;
+    }
+
+
 
     public static Boolean validarRepetido(Persona persona) {
         SqlSession conexion = MyBatisUtil.obtenerConexion();

@@ -150,6 +150,22 @@ public class WSColaborador {
         }
         throw new BadRequestException();
     }
+    
+    @GET
+    @Path("obtener-foto/{idColaborador}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje obtenerFoto(@PathParam("idColaborador") Integer idColaborador) {
+        if (idColaborador != null && idColaborador > 0) {
+            Integer idPersona = ImpColaborador.obtenerIdPersona(idColaborador);
+            return ImpPersona.obtenerFoto(idPersona);
+        }
+        Mensaje mensaje = new Mensaje();
+        mensaje.setError(true);
+        mensaje.setMensaje("El ID del colaborador es inválido");
+        return mensaje;
+    }
+
+
 
     @GET
     @Path("obtener-ultimo-id")
