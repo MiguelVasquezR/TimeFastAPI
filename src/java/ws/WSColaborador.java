@@ -38,20 +38,16 @@ public class WSColaborador {
         Mensaje mensaje = new Mensaje();
         Gson gson = new Gson();
         Colaborador colaborador = gson.fromJson(jsonColaborador, Colaborador.class);
-
         boolean respuestaPersona = ImpPersona.agregarPersona(colaborador.getPersona()).equals("Guardado");
-
         if (!respuestaPersona) {
             mensaje.setError(true);
             mensaje.setMensaje("No es posible agregar a la persona");
             return mensaje;
         }
-
         int idPersona = ImpPersona.obtenerUltimoID();
         if (idPersona > 0) {
             colaborador.setIdPersona(idPersona);
             boolean respuestaColaborador = ImpColaborador.agregarColaborador(colaborador);
-            System.out.println(respuestaColaborador);
             if (respuestaColaborador) {
                 mensaje.setError(true);
                 mensaje.setMensaje("No es posible agregar al colaborador");

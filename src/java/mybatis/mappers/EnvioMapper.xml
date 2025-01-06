@@ -11,14 +11,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE id = #{idEnvio};
     </update>
 
-
-        
     <select id="obtenerTodosIdEnvio" resultType="int">
         SELECT id FROM Envio;
     </select>
     
     <insert id="agregar" parameterType="pojo.Envio" >
-        INSERT INTO Envio (idOrigen, idDestino, costo, fecha, numGuia, fechaEntrega) 
+        INSERT INTO Envio (idOrigen, idDestino, costo, fecha, numGuia, fechaEntrega, idCliente) 
         VALUES 
         (
         #{idOrigen},
@@ -26,12 +24,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         #{costo},
         #{fecha},
         #{numGuia},
-        #{fechaEntrega}
+        #{fechaEntrega},
+        #{idCliente}
         )
     </insert>
     
     <update id="actualizar" parameterType="pojo.Envio">
-        UPDATE Envio SET costo=#{costo}, fecha=#{fecha}  WHERE id = #{idEnvio}
+        UPDATE Envio 
+        SET 
+        idOrigen = #{idOrigen},
+        costo = #{costo},
+        fecha = #{fecha},
+        fechaEntrega = #{fechaEntrega},
+        idCliente = #{idCliente}
+        WHERE 
+        id = #{idEnvio};
     </update>
     
     <delete id="eliminar" parameterType="Integer" >
@@ -156,7 +163,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="obtenerTodos" resultMap="envioNumGuia">
-    SELECT
+        SELECT
         e.id AS idEnvio,
         e.numGuia,
         e.fecha,
@@ -194,21 +201,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         pcl.nombre AS nombreCliente,
         pcl.apellidoPaterno AS apellidoPaternoCliente,
         pcl.apellidoMaterno AS apellidoMaternoCliente
-    FROM
+        FROM
         Envio e
-    INNER JOIN Direccion d ON e.idOrigen = d.id
-    INNER JOIN Direccion d2 ON e.idDestino = d2.id
-    LEFT JOIN Colaborador c ON e.idConductor = c.id
-    LEFT JOIN Persona p ON c.idPersona = p.id
-    INNER JOIN Cliente cl ON e.idCliente = cl.id
-    INNER JOIN Persona pcl ON cl.idPersona = pcl.id;
+        INNER JOIN Direccion d ON e.idOrigen = d.id
+        INNER JOIN Direccion d2 ON e.idDestino = d2.id
+        LEFT JOIN Colaborador c ON e.idConductor = c.id
+        LEFT JOIN Persona p ON c.idPersona = p.id
+        INNER JOIN Cliente cl ON e.idCliente = cl.id
+        INNER JOIN Persona pcl ON cl.idPersona = pcl.id;
 
-</select>
+    </select>
 
     <insert id="agregarConCliente" parameterType="pojo.Envio">
-    INSERT INTO Envio (idOrigen, idDestino, idCliente, costo, fecha, numGuia, fechaEntrega) 
-    VALUES 
-    (
+        INSERT INTO Envio (idOrigen, idDestino, idCliente, costo, fecha, numGuia, fechaEntrega) 
+        VALUES 
+        (
         #{idOrigen},
         #{idDestino},
         #{cliente.id}, 
@@ -216,8 +223,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         #{fecha},
         #{numGuia},
         #{fechaEntrega}
-    )
-</insert>
+        )
+    </insert>
 
 
 </mapper>

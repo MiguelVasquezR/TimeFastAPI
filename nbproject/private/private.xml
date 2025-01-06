@@ -3,35 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/mappers/ColaboradorMapper.xml</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/pojo/Cliente.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/pojo/Direccion.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpPaquete.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpUnidad.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/ws/WSColaborador.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/mappers/RolColaboradorMapper.xml</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpLogin.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/mappers/PaqueteMapper.xml</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/pojo/Colaborador.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpRolColaborador.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpDireccion.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/ws/WSCliente.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/pojo/Envio.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/ws/WSEnvios.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpEnvio.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/mappers/LoginMapper.xml</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpColaborador.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/mybatis-config.xml</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/mappers/EnvioMapper.xml</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/mappers/ClienteMapper.xml</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/MyBatisUtil.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpPersona.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/ws/WSPaquete.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/ws/WSLogin.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpEstadoEnvio.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/mappers/PersonaMapper.xml</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/dominio/ImpCliente.java</file>
-            <file>file:/C:/Users/CDGN_/Desktop/ApiDefinitiva/TimeFastAPI/src/java/mybatis/mappers/EstadoEnvioMapper.xml</file>
+            <file>file:/Users/vasquez/Desktop/proyectoIntegracion/TimeFastAPI/src/java/ws/WSEnvios.java</file>
         </group>
     </open-files>
 </project-private>
