@@ -57,6 +57,16 @@ public class WSEnvios {
                     envio.setFecha(fechaActual);
 
                     if (!ImpEnvio.agregarEnvio(envio)) {
+                        EstadoEnvio ee = new EstadoEnvio();
+                        ee.setDescripcion("Se ha registrado en el sistema");
+                        ee.setEstado("Pendiente");
+                        ee.setIdEnvio(ImpEnvio.obtenerUltimoId());
+                        LocalDateTime ahora = LocalDateTime.now();
+                        DateTimeFormatter formatoSQL = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        String fechaEnSQL = ahora.format(formatoSQL);
+                        ee.setFecha(fechaEnSQL);
+                        ImpEstadoEnvio.insertarNuevoEstado(ee);
+
                         mensaje.setError(false);
                         mensaje.setMensaje("Se ha agregar el envio correctamente");
                     } else {

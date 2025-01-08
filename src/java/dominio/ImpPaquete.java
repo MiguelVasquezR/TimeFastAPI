@@ -40,6 +40,7 @@ public class ImpPaquete {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         if (conexion != null) {
             try {
+                System.out.println(paquete.toString());
                 int res = conexion.update("paquetes.actualizar", paquete);
                 conexion.commit();
                 if (res > 0) {

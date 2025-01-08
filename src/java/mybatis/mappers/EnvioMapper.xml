@@ -225,6 +225,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         #{fechaEntrega}
         )
     </insert>
-
-
+    
+    <select id="obtenerUltimoID" resultType="Integer" >
+        SELECT MAX(id) as last_id FROM Envio
+    </select>
+    
 </mapper>

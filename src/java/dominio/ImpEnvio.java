@@ -12,7 +12,7 @@ import pojo.Cliente;
 import pojo.Envio;
 
 public class ImpEnvio {
-    
+
     public static Boolean agregarEnvio(Envio envio) {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         envio.setFechaEntrega(obtenerFechaEntrega());
@@ -39,7 +39,7 @@ public class ImpEnvio {
             return true;
         }
     }
-    
+
     public static Boolean actualizarEnvio(Envio envio) {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         if (conexion != null) {
@@ -65,7 +65,7 @@ public class ImpEnvio {
             return true;
         }
     }
-    
+
     public static Envio consultarEnvioNumGuia(String numGuia) {
         Envio envio = null;
         SqlSession conexion = MyBatisUtil.obtenerConexion();
@@ -78,7 +78,7 @@ public class ImpEnvio {
         }
         return envio;
     }
-    
+
     private static String obtenerFechaEntrega() {
         LocalDateTime ahora = LocalDateTime.now();
         int hora = ahora.getHour();
@@ -92,8 +92,7 @@ public class ImpEnvio {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return nuevaFecha.format(formatter);
     }
-    
-    
+
     public static List<String> obtenerTodosLosNumGuia() {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         List<String> numerosGuia = new ArrayList<>();
@@ -112,25 +111,25 @@ public class ImpEnvio {
         }
         return numerosGuia;
     }
-    
+
     public static List<Envio> obtenerTodosLosEnvios() {
-       SqlSession conexion = MyBatisUtil.obtenerConexion();
-       List<Envio> envios = new ArrayList<>();
-       if (conexion != null) {
-           try {
-               envios = conexion.selectList("envios.obtenerTodos");
-           } catch (Exception ex) {
-               ex.printStackTrace();
-           } finally {
-               try {
-                   conexion.close();
-               } catch (Exception e) {
-                   e.printStackTrace();
-               }
-           }
-       }
-       return envios;
-   }
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        List<Envio> envios = new ArrayList<>();
+        if (conexion != null) {
+            try {
+                envios = conexion.selectList("envios.obtenerTodos");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                try {
+                    conexion.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return envios;
+    }
 
     public static List<Integer> obtenerTodosLosIdEnvio() {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
@@ -150,9 +149,8 @@ public class ImpEnvio {
         }
         return idsEnvio;
     }
-    
-    
-public static boolean asignarConductor(int idEnvio, int idConductor) {
+
+    public static boolean asignarConductor(int idEnvio, int idConductor) {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         if (conexion != null) {
             try {
@@ -175,34 +173,52 @@ public static boolean asignarConductor(int idEnvio, int idConductor) {
         }
     }
 
-public static Boolean agregarEnvioConCliente(Envio envio, int idCliente) {
-    SqlSession conexion = MyBatisUtil.obtenerConexion();
-    envio.setFechaEntrega(obtenerFechaEntrega());
-    envio.setCliente(new Cliente());
-    envio.getCliente().setId(idCliente); // Asigna el idCliente al envío
-    if (conexion != null) {
-        try {
-            int res = conexion.insert("envios.agregarConCliente", envio);
-            conexion.commit();
-            if (res > 0) {
-                return false;
-            } else {
-                return true;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return true;
-        } finally {
+    public static Boolean agregarEnvioConCliente(Envio envio, int idCliente) {
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        envio.setFechaEntrega(obtenerFechaEntrega());
+        envio.setCliente(new Cliente());
+        envio.getCliente().setId(idCliente); // Asigna el idCliente al envío
+        if (conexion != null) {
             try {
-                conexion.close();
-            } catch (Exception e) {
+                int res = conexion.insert("envios.agregarConCliente", envio);
+                conexion.commit();
+                if (res > 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
                 return true;
+            } finally {
+                try {
+                    conexion.close();
+                } catch (Exception e) {
+                    return true;
+                }
             }
+        } else {
+            return true;
         }
-    } else {
-        return true;
     }
-}
 
-      
+    public static Integer obtenerUltimoId() {
+        SqlSession conexion = MyBatisUtil.obtenerConexion();
+        if (conexion != null) {
+            try {
+                int res = conexion.selectOne("envios.obtenerUltimoID");
+                if (res > 0) {
+                    return res;
+                } else {
+                    return 0;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
 }

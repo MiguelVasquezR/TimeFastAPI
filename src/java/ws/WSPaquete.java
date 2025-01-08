@@ -1,7 +1,10 @@
 package ws;
 
 import com.google.gson.Gson;
+import dominio.ImpEstadoEnvio;
 import dominio.ImpPaquete;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Context;
@@ -18,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import pojo.Mensaje;
 import pojo.Paquete;
 import javax.ws.rs.PathParam;
+import pojo.EstadoEnvio;
 
 /**
  * REST Web Service
@@ -111,7 +115,7 @@ public class WSPaquete {
         }
         throw new BadRequestException();
     }
-    
+
     @GET
     @Path("obtener-paquetes-por-envio/{idEnvio}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -133,7 +137,6 @@ public class WSPaquete {
         throw new BadRequestException("El ID del envío debe ser mayor a 0");
     }
 
-
     @GET
     @Path("obtener-paquetes")
     @Produces(MediaType.APPLICATION_JSON)
@@ -152,7 +155,5 @@ public class WSPaquete {
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(String content) {
     }
-    
 
-    
 }

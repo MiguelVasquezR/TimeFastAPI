@@ -12,12 +12,13 @@ public class EstadoEnvio {
     public EstadoEnvio() {
     }
 
-    public EstadoEnvio(Integer idEstadoEnvio, Integer idEnvio, Envio envio, String fecha, String descripcion) {
+    public EstadoEnvio(Integer idEstadoEnvio, Integer idEnvio, Envio envio, String fecha, String descripcion, String estado) {
         this.idEstadoEnvio = idEstadoEnvio;
         this.idEnvio = idEnvio;
         this.envio = envio;
         this.fecha = fecha;
         this.descripcion = descripcion;
+        this.estado = estado;
     }
 
     public Integer getIdEstadoEnvio() {
@@ -58,6 +59,14 @@ public class EstadoEnvio {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    
+     public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     @Override

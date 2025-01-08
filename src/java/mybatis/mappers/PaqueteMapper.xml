@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="descripcion" column="descripcion" />
         <result property="dimensiones" column="dimensiones" />
         <result property="peso" column="peso" />
+        <result property="idEnvio" column="idEnvio" />
         
         <association property="envio" javaType="pojo.Envio">
             <result property="numGuia" column="numGuia" />
@@ -30,11 +31,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
     
     <select id="obtenerPaquetes" resultMap="paqueteResultMap">
-        SELECT p.id as idPaquete, p.descripcion, p.dimensiones, p.peso, e.numGuia FROM Paquete p INNER JOIN Envio e ON p.idEnvio = e.id;
+        SELECT p.id as idPaquete, p.idEnvio as idEnvio, p.descripcion, p.dimensiones, p.peso, e.numGuia FROM Paquete p INNER JOIN Envio e ON p.idEnvio = e.id;
     </select>
     
     <update id="actualizar" parameterType="pojo.Paquete">
-        UPDATE Paquete SET descripcion = #{descripcion}, dimensiones = #{dimensiones}, peso= #{peso} WHERE id = #{id};
+        UPDATE Paquete SET idEnvio=#{idEnvio}, descripcion = #{descripcion}, dimensiones = #{dimensiones}, peso= #{peso} WHERE id = #{id};
     </update>
     
     <delete id="eliminar" parameterType="Integer" >
