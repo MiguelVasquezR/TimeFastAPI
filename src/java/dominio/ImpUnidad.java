@@ -1,5 +1,7 @@
 package dominio;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,14 +24,10 @@ public class ImpUnidad {
                 if (res > 0) {
                     msj.setError(false);
                     msj.setMensaje("Unidad agregada correctamente");
-                } else {
-                    msj.setError(true);
-                    msj.setMensaje("Por el momento no se puede almacenar la unidad, intentelo más tarde");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 msj.setError(true);
-                msj.setMensaje("Por el momento no se puede almacenar la unidad, intentelo más tarde");
+                msj.setMensaje("Por el momento no se puede almacenar la unidad, intentelo más tarde.");
             }
         } else {
             msj.setError(true);
@@ -98,7 +96,6 @@ public class ImpUnidad {
                     return false;
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
                 return false;
             }
         } else {
@@ -172,6 +169,7 @@ public class ImpUnidad {
     }
 
     public static Mensaje conductorAsociado(Integer idConductor) {
+        System.out.println(idConductor);
         Mensaje msj = new Mensaje();
         SqlSession conextionBD = MyBatisUtil.obtenerConexion();
         if (conextionBD != null) {
@@ -186,7 +184,6 @@ public class ImpUnidad {
                     msj.setMensaje("El conductor no está asociado");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 msj.setError(false);
                 msj.setMensaje("El conductor no está asociado");
             }

@@ -92,7 +92,6 @@ public class ImpEstadoEnvio {
             try {
                 return conexionBD.selectList("estadoEnvio.detallesEnvioConductor", id);
             } catch (Exception e) {
-                e.printStackTrace();
                 msj.setError(true);
                 msj.setMensaje("No se han encontrado envios para usted");
             }

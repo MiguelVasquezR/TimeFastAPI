@@ -39,6 +39,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE CONCAT(nombre, ' ', apellidoPaterno, ' ', apellidoMaterno) LIKE #{nombreCompleto}
         OR correo = #{correo}
     </select>
-
     
+   
 </mapper>

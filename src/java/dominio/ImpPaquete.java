@@ -62,7 +62,7 @@ public class ImpPaquete {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         if (conexion != null) {
             try {
-                int res = conexion.delete("paquetes.eliminar", id);
+                int res = conexion.update("paquetes.eliminar", id);
                 conexion.commit();
                 if (res > 0) {
                     return false;

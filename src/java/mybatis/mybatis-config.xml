@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
                 <property name="url" value="jdbc:mysql://localhost:3306/timeFast?serverTimezone=UTC"/>  
                 <property name="username" value="timeFastUser"/>    
                 <property name="password" value="timeFastBaseDatos1234"/>
-                <property name="poolMaximumActiveConnections" value="5000"/>
+                <property name="poolMaximumActiveConnections" value="500000"/>
             </dataSource>
         </environment>
         
@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
                 <property name="url" value="jdbc:mysql://localhost:3306/timeFast?serverTimezone=UTC"/>  
                 <property name="username" value="timeFastUser"/>    
                 <property name="password" value="timeFastBaseDatos1234"/>
-                <property name="poolMaximumActiveConnections" value="5000"/>
+                <property name="poolMaximumActiveConnections" value="500000"/>
             </dataSource>
         </environment>
     </environments>
