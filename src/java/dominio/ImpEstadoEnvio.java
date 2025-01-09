@@ -102,5 +102,25 @@ public class ImpEstadoEnvio {
 
         return null;
     }
+    
+    public static List<Envio> obtenerTodosDetallesEnvio(Integer id) {
+        Mensaje msj = new Mensaje();
+        SqlSession conexionBD = MyBatisUtil.obtenerConexion();
+        if (conexionBD != null) {
+            try {
+                return conexionBD.selectList("estadoEnvio.obtenerTodosPaquetesEnvio", id);
+            } catch (Exception e) {
+                msj.setError(true);
+                msj.setMensaje("No se han encontrado envios para usted");
+            }
+        } else {
+            msj.setError(true);
+            msj.setMensaje("No se han encontrado envios para usted");
+        }
+
+        return null;
+    }
+    
+    
 
 }

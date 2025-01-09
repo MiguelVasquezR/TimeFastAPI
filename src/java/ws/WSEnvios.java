@@ -202,6 +202,21 @@ public class WSEnvios {
         }
         throw new BadRequestException();
     }
+    
+      @GET
+    @Path("detalles-todo-envio/{idEnvio}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Envio> detallesTodoEnvio(@PathParam("idEnvio") int idEnvio) {
+        if (idEnvio > 0) {
+            List<Envio> lista = ImpEstadoEnvio.obtenerDetallesEnvio(idEnvio);
+            for (Envio envio : lista) {
+                List<EstadoEnvio> estados = ImpEstadoEnvio.obtenerEstadosEnvio(envio.getIdEnvio());
+                envio.setEstadoEnvios(estados);
+            }
+            return lista;
+        }
+        throw new BadRequestException();
+    }
 
     @POST
     @Path("nuevo-estado")

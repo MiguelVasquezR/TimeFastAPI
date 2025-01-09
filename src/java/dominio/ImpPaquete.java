@@ -127,7 +127,7 @@ public class ImpPaquete {
         SqlSession conexion = MyBatisUtil.obtenerConexion();
         if (conexion != null) {
             try {
-                return conexion.selectList("paquetes.obtenerPaquetes");
+                return conexion.selectList("paquetes.obtenerTodosPaquetesEnvio");
             } catch (Exception e) {
                 e.printStackTrace();
             }
